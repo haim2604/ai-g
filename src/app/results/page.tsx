@@ -37,7 +37,6 @@ export default function Results() {
   const [currentGiftIndex, setCurrentGiftIndex] = useState(0);
   const [isChanging, setIsChanging] = useState(false);
   const [showChangeReason, setShowChangeReason] = useState(false);
-  const [answers, setAnswers] = useState<Record<number, string>>({});
   const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,18 +51,11 @@ export default function Results() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  useEffect(() => {
-    const savedAnswers = localStorage.getItem('quizAnswers');
-    if (savedAnswers) {
-      setAnswers(JSON.parse(savedAnswers));
-    }
-  }, []);
-
   const handleChangeGift = () => {
     setShowChangeReason(true);
   };
 
-  const confirmChangeGift = (reason: string) => {
+  const confirmChangeGift = () => {
     setIsChanging(true);
     setShowChangeReason(false);
     
@@ -160,7 +152,7 @@ export default function Results() {
                 <h3 className="text-xl font-semibold mb-4 text-gradient">למה תרצה/י להחליף את המתנה?</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <motion.button
-                    onClick={() => confirmChangeGift('יקר מדי')}
+                    onClick={() => confirmChangeGift()}
                     className="bg-white/10 hover:bg-white/20 transition-colors p-4 rounded-lg magnetic"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -168,7 +160,7 @@ export default function Results() {
                     יקר מדי
                   </motion.button>
                   <motion.button
-                    onClick={() => confirmChangeGift('לא מתאים לטעם')}
+                    onClick={() => confirmChangeGift()}
                     className="bg-white/10 hover:bg-white/20 transition-colors p-4 rounded-lg magnetic"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}

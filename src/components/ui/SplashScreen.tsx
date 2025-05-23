@@ -4,9 +4,19 @@ import { motion } from 'framer-motion';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { GiftIcon } from '@heroicons/react/24/outline';
 
+interface BackgroundPoint {
+  id: number;
+  initialX: number;
+  initialY: number;
+  targetX: number;
+  targetY: number;
+  duration: number;
+}
+
 // פונקציה עזר ליצירת מערך של נקודות רקע
-const createBackgroundPoints = (width: number, height: number) => {
-  return Array.from({ length: 10 }, () => ({
+const createBackgroundPoints = (width: number, height: number): BackgroundPoint[] => {
+  return Array.from({ length: 10 }, (_, i) => ({
+    id: i,
     initialX: Math.random() * (width || 1000),
     initialY: Math.random() * (height || 800),
     targetX: Math.random() * (width || 1000),
@@ -18,15 +28,12 @@ const createBackgroundPoints = (width: number, height: number) => {
 export default function SplashScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
-  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
-  const [backgroundPoints, setBackgroundPoints] = useState<Array<any>>([]);
+  const [backgroundPoints, setBackgroundPoints] = useState<BackgroundPoint[]>([]);
 
-  // רק בצד הלקוח
   useLayoutEffect(() => {
     setIsMounted(true);
     const width = window.innerWidth;
     const height = window.innerHeight;
-    setWindowSize({ width, height });
     setBackgroundPoints(createBackgroundPoints(width, height));
   }, []);
 
@@ -114,9 +121,9 @@ export default function SplashScreen() {
 
         {/* Animated background shapes */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {backgroundPoints.map((point, i) => (
+          {backgroundPoints.map((point) => (
             <motion.div
-              key={i}
+              key={point.id}
               className="absolute w-16 h-16 rounded-full bg-white/10"
               initial={{
                 x: point.initialX,

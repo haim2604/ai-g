@@ -6,8 +6,16 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import IntroAnimation from '@/components/ui/IntroAnimation';
 import SplashScreen from '@/components/ui/SplashScreen';
 
+interface BackgroundPoint {
+  initialX: number;
+  initialY: number;
+  targetX: number;
+  targetY: number;
+  duration: number;
+}
+
 // פונקציה עזר ליצירת מערך של נקודות רקע
-const createBackgroundPoints = (width: number, height: number) => {
+const createBackgroundPoints = (width: number, height: number): BackgroundPoint[] => {
   return Array.from({ length: 20 }, () => ({
     initialX: Math.random() * (width || 1000),
     initialY: Math.random() * (height || 800),
@@ -23,7 +31,7 @@ export default function Home() {
   const [isMounted, setIsMounted] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
-  const [backgroundPoints, setBackgroundPoints] = useState<Array<any>>([]);
+  const [backgroundPoints, setBackgroundPoints] = useState<BackgroundPoint[]>([]);
   const cursorRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
