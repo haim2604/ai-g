@@ -26,11 +26,9 @@ const createBackgroundPoints = (width: number, height: number): BackgroundPoint[
 };
 
 export default function Home() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [showContent, setShowContent] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [introComplete, setIntroComplete] = useState(false);
-  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [backgroundPoints, setBackgroundPoints] = useState<BackgroundPoint[]>([]);
   const cursorRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -40,10 +38,7 @@ export default function Home() {
   // רק בצד הלקוח
   useLayoutEffect(() => {
     setIsMounted(true);
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    setWindowSize({ width, height });
-    setBackgroundPoints(createBackgroundPoints(width, height));
+    setBackgroundPoints(createBackgroundPoints(window.innerWidth, window.innerHeight));
   }, []);
 
   useEffect(() => {
@@ -66,7 +61,6 @@ export default function Home() {
         const { clientX, clientY } = e;
         cursorRef.current.style.transform = `translate(${clientX - 10}px, ${clientY - 10}px)`;
       }
-      setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
