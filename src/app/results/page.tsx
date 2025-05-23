@@ -1,9 +1,20 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
+
+interface BackgroundPoint {
+  id: number;
+  initialX: number;
+  initialY: number;
+  targetX: number;
+  targetY: number;
+  scale: number;
+  duration: number;
+  size: number;
+}
 
 // מערך של מתנות לדוגמה - בהמשך נחליף עם API אמיתי
 const mockGifts = [
@@ -33,13 +44,32 @@ const mockGifts = [
   }
 ];
 
+// פונקציה עזר ליצירת מערך של נקודות רקע
+const createBackgroundPoints = (width: number, height: number): BackgroundPoint[] => {
+  return Array.from({ length: 15 }, (_, i) => ({
+    id: i,
+    initialX: Math.random() * (width || 1000),
+    initialY: Math.random() * (height || 800),
+    targetX: Math.random() * (width || 1000),
+    targetY: Math.random() * (height || 800),
+    scale: Math.random() * 2 + 1,
+    duration: Math.random() * 20 + 10,
+    size: Math.random() * 200 + 50,
+  }));
+};
+
 export default function Results() {
   const [currentGiftIndex, setCurrentGiftIndex] = useState(0);
   const [isChanging, setIsChanging] = useState(false);
   const [showChangeReason, setShowChangeReason] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [backgroundPoints, setBackgroundPoints] = useState<BackgroundPoint[]>([]);
   const cursorRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    setIsMounted(true);
+    setBackgroundPoints(createBackgroundPoints(window.innerWidth, window.innerHeight));
+
     const handleMouseMove = (e: MouseEvent) => {
       if (cursorRef.current) {
         const { clientX, clientY } = e;
@@ -66,6 +96,60 @@ export default function Results() {
   };
 
   const currentGift = mockGifts[currentGiftIndex];
+
+  // אם לא במצב client-side, מציג גרסה סטטית
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen gradient-animation overflow-hidden">
+        <div className="min-h-screen flex flex-col items-center justify-center p-4">
+          <div className="relative bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-2xl w-full">
+            <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center text-gradient">
+              המתנה המושלמת עבורך!
+            </h1>
+            
+            <div className="bg-white/5 rounded-xl p-6 mb-6 overflow-hidden relative">
+              <img 
+                src={currentGift.image} 
+                alt={currentGift.title}
+                className="w-full h-64 object-contain mb-4 rounded-lg"
+              />
+
+              <div>
+                <h2 className="text-2xl font-semibold mb-2">{currentGift.title}</h2>
+                <p className="text-lg mb-4 text-gray-200">{currentGift.description}</p>
+                <p className="text-3xl font-bold mb-6 text-gradient">{currentGift.price}</p>
+                
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a
+                    href={currentGift.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-full text-center font-semibold"
+                  >
+                    לרכישה באלי אקספרס
+                  </a>
+                  <button
+                    onClick={handleChangeGift}
+                    className="flex items-center justify-center gap-2 flex-1 bg-purple-500/50 backdrop-blur-md px-6 py-3 rounded-full font-semibold"
+                  >
+                    <ArrowPathIcon className="w-5 h-5" />
+                    החלף מתנה
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <Link
+              href="/"
+              className="block text-center text-gray-300"
+            >
+              חזרה להתחלה
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -188,28 +272,28 @@ export default function Results() {
 
         {/* Animated background shapes */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          {[...Array(15)].map((_, i) => (
+          {backgroundPoints.map((point) => (
             <motion.div
-              key={i}
+              key={point.id}
               className="absolute rounded-full bg-white/5"
               initial={{
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-                scale: Math.random() * 2 + 1,
+                x: point.initialX,
+                y: point.initialY,
+                scale: point.scale,
               }}
               animate={{
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
+                x: point.targetX,
+                y: point.targetY,
                 scale: [1, 2, 1],
               }}
               transition={{
-                duration: Math.random() * 20 + 10,
+                duration: point.duration,
                 repeat: Infinity,
                 ease: "linear",
               }}
               style={{
-                width: `${Math.random() * 200 + 50}px`,
-                height: `${Math.random() * 200 + 50}px`,
+                width: `${point.size}px`,
+                height: `${point.size}px`,
                 filter: 'blur(40px)',
               }}
             />
