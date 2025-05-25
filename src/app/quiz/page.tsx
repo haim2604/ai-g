@@ -413,14 +413,23 @@ export default function Quiz() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
           >
-            <Image
-              src={questions[currentQuestion].backgroundImage}
-              alt="Background"
-              fill
-              className="object-cover opacity-40"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/60" />
+            <div className="absolute inset-0 w-full h-full">
+              <Image
+                src={questions[currentQuestion].backgroundImage}
+                alt="Background"
+                fill
+                className="object-cover object-center"
+                sizes="100vw"
+                priority
+                quality={85}
+                style={{
+                  objectPosition: 'center center',
+                  minHeight: '100vh',
+                  minWidth: '100vw'
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/80" />
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
@@ -432,14 +441,14 @@ export default function Quiz() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="flex flex-col items-center justify-center min-h-screen p-4 relative z-10"
+          className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 md:p-8"
         >
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-2xl mx-auto">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.3 }}
-              className="text-4xl md:text-5xl font-bold mb-12 text-center text-gradient"
+              className="text-3xl md:text-5xl font-bold mb-8 md:mb-12 text-center text-gradient"
             >
               {questions[currentQuestion].question}
             </motion.h2>
