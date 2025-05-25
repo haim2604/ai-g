@@ -26,6 +26,7 @@ import {
   faStar,
   faMagic
 } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 interface BackgroundPoint {
   id: number;
@@ -38,7 +39,7 @@ interface BackgroundPoint {
 
 interface Option {
   text: string;
-  icon?: any;
+  icon?: IconDefinition;
 }
 
 interface GiftResponse {
@@ -51,7 +52,15 @@ interface GiftResponse {
   };
 }
 
-const questions = [
+interface Question {
+  id: number;
+  question: string;
+  backgroundImage: string;
+  options: Option[];
+  hasOtherOption: boolean;
+}
+
+const questions: Question[] = [
   {
     id: 1,
     question: 'מי האדם שאתה בוחר עבורו מתנה?',
