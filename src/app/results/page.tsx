@@ -1,305 +1,147 @@
 'use client';
 
-import { useState, useRef, useLayoutEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGift, faArrowLeft, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
-interface BackgroundPoint {
-  id: number;
-  initialX: number;
-  initialY: number;
-  targetX: number;
-  targetY: number;
-  scale: number;
-  duration: number;
-  size: number;
+interface GiftSuggestion {
+  title: string;
+  url: string;
+  image: string;
+  price: number;
+  description: string;
+  timestamp: string;
 }
 
-// מערך של מתנות לדוגמה - בהמשך נחליף עם API אמיתי
-const mockGifts = [
-  {
-    title: 'אוזניות Sony WH-1000XM4',
-    description: 'אוזניות על-אוזן אלחוטיות עם ביטול רעשים אקטיבי',
-    price: '$278',
-    image: 'https://m.media-amazon.com/images/I/71o8Q5XJS5L._AC_SL1500_.jpg',
-    link: 'https://www.aliexpress.com/item/1005002066903785.html',
-    categories: ['טכנולוגיה', 'מוזיקה']
-  },
-  {
-    title: 'סט סכיני שף מקצועיים',
-    description: 'סט סכינים יפני איכותי עם להב פלדת דמשק',
-    price: '$89',
-    image: 'https://m.media-amazon.com/images/I/71v7NR5mChL._AC_SL1500_.jpg',
-    link: 'https://www.aliexpress.com/item/1005001270888374.html',
-    categories: ['מטבח', 'בישול']
-  },
-  {
-    title: 'שעון חכם Galaxy Watch 5',
-    description: 'שעון חכם עם מעקב בריאות ותמיכה ב-NFC',
-    price: '$199',
-    image: 'https://m.media-amazon.com/images/I/61Sl+xoVHoL._AC_SL1500_.jpg',
-    link: 'https://www.aliexpress.com/item/1005004557777748.html',
-    categories: ['טכנולוגיה', 'ספורט']
-  }
-];
-
-// פונקציה עזר ליצירת מערך של נקודות רקע
-const createBackgroundPoints = (width: number, height: number): BackgroundPoint[] => {
-  return Array.from({ length: 15 }, (_, i) => ({
-    id: i,
-    initialX: Math.random() * (width || 1000),
-    initialY: Math.random() * (height || 800),
-    targetX: Math.random() * (width || 1000),
-    targetY: Math.random() * (height || 800),
-    scale: Math.random() * 2 + 1,
-    duration: Math.random() * 20 + 10,
-    size: Math.random() * 200 + 50,
-  }));
-};
-
 export default function Results() {
-  const [currentGiftIndex, setCurrentGiftIndex] = useState(0);
-  const [isChanging, setIsChanging] = useState(false);
-  const [showChangeReason, setShowChangeReason] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const [backgroundPoints, setBackgroundPoints] = useState<BackgroundPoint[]>([]);
-  const cursorRef = useRef<HTMLDivElement>(null);
+  const [giftSuggestion, setGiftSuggestion] = useState<GiftSuggestion | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useLayoutEffect(() => {
-    setIsMounted(true);
-    setBackgroundPoints(createBackgroundPoints(window.innerWidth, window.innerHeight));
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (cursorRef.current) {
-        const { clientX, clientY } = e;
-        cursorRef.current.style.transform = `translate(${clientX - 10}px, ${clientY - 10}px)`;
+  useEffect(() => {
+    const loadGiftSuggestion = () => {
+      const savedGift = localStorage.getItem('giftSuggestion');
+      if (savedGift) {
+        setGiftSuggestion(JSON.parse(savedGift));
       }
+      setIsLoading(false);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    loadGiftSuggestion();
   }, []);
 
-  const handleChangeGift = () => {
-    setShowChangeReason(true);
-  };
-
-  const confirmChangeGift = () => {
-    setIsChanging(true);
-    setShowChangeReason(false);
-    
-    setTimeout(() => {
-      setCurrentGiftIndex((prev) => (prev + 1) % mockGifts.length);
-      setIsChanging(false);
-    }, 1000);
-  };
-
-  const currentGift = mockGifts[currentGiftIndex];
-
-  // אם לא במצב client-side, מציג גרסה סטטית
-  if (!isMounted) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen gradient-animation overflow-hidden">
-        <div className="min-h-screen flex flex-col items-center justify-center p-4">
-          <div className="relative bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-2xl w-full">
-            <h1 className="text-4xl md:text-5xl font-bold mb-8 text-center text-gradient">
-              המתנה המושלמת עבורך!
-            </h1>
-            
-            <div className="bg-white/5 rounded-xl p-6 mb-6 overflow-hidden relative">
-              <img 
-                src={currentGift.image} 
-                alt={currentGift.title}
-                className="w-full h-64 object-contain mb-4 rounded-lg"
-              />
+      <div className="min-h-screen gradient-animation flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
-              <div>
-                <h2 className="text-2xl font-semibold mb-2">{currentGift.title}</h2>
-                <p className="text-lg mb-4 text-gray-200">{currentGift.description}</p>
-                <p className="text-3xl font-bold mb-6 text-gradient">{currentGift.price}</p>
-                
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a
-                    href={currentGift.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-full text-center font-semibold"
-                  >
-                    לרכישה באלי אקספרס
-                  </a>
-                  <button
-                    onClick={handleChangeGift}
-                    className="flex items-center justify-center gap-2 flex-1 bg-purple-500/50 backdrop-blur-md px-6 py-3 rounded-full font-semibold"
-                  >
-                    <ArrowPathIcon className="w-5 h-5" />
-                    החלף מתנה
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <Link
-              href="/"
-              className="block text-center text-gray-300"
-            >
-              חזרה להתחלה
-            </Link>
-          </div>
-        </div>
+  if (!giftSuggestion) {
+    return (
+      <div className="min-h-screen gradient-animation flex flex-col items-center justify-center p-4">
+        <h1 className="text-3xl font-bold mb-4">לא נמצאה המלצת מתנה</h1>
+        <p className="mb-8">נראה שעדיין לא השלמת את השאלון</p>
+        <Link 
+          href="/quiz"
+          className="bg-white/10 backdrop-blur-md hover:bg-white/20 transition-colors px-6 py-3 rounded-full font-semibold flex items-center gap-2"
+        >
+          <FontAwesomeIcon icon={faArrowLeft} />
+          חזרה לשאלון
+        </Link>
       </div>
     );
   }
 
   return (
-    <>
-      <div ref={cursorRef} className="custom-cursor" />
-      <main className="min-h-screen gradient-animation overflow-hidden">
-        <div className="min-h-screen flex flex-col items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative bg-white/10 backdrop-blur-lg rounded-2xl p-8 max-w-2xl w-full"
-          >
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-4xl md:text-5xl font-bold mb-8 text-center text-gradient"
-            >
-              המתנה המושלמת עבורך!
-            </motion.h1>
-            
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentGift.title}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.5 }}
-                className="bg-white/5 rounded-xl p-6 mb-6 overflow-hidden relative group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                <motion.img 
-                  src={currentGift.image} 
-                  alt={currentGift.title}
-                  className="w-full h-64 object-contain mb-4 rounded-lg relative z-10"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                />
+    <div className="min-h-screen gradient-animation">
+      <div className="max-w-4xl mx-auto p-4 py-8">
+        {/* Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <FontAwesomeIcon icon={faGift} className="mr-4 text-pink-400" />
+            המתנה המושלמת בשבילך
+          </h1>
+          <p className="text-xl text-white/80">
+            בהתבסס על התשובות שלך, מצאנו את המתנה המושלמת
+          </p>
+        </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="relative z-10"
-                >
-                  <h2 className="text-2xl font-semibold mb-2">{currentGift.title}</h2>
-                  <p className="text-lg mb-4 text-gray-200">{currentGift.description}</p>
-                  <p className="text-3xl font-bold mb-6 text-gradient">{currentGift.price}</p>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <motion.a
-                      href={currentGift.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-full text-center font-semibold hover:bg-white/20 transition-all transform hover-lift magnetic"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      לרכישה באלי אקספרס
-                    </motion.a>
-                    <motion.button
-                      onClick={handleChangeGift}
-                      className="flex items-center justify-center gap-2 flex-1 bg-purple-500/50 backdrop-blur-md hover:bg-purple-500/70 transition-colors px-6 py-3 rounded-full font-semibold magnetic"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <ArrowPathIcon className={`w-5 h-5 ${isChanging ? 'animate-spin' : ''}`} />
-                      החלף מתנה
-                    </motion.button>
-                  </div>
-                </motion.div>
-              </motion.div>
-            </AnimatePresence>
-
-            {showChangeReason && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="bg-white/5 backdrop-blur-md rounded-xl p-6 mb-6"
-              >
-                <h3 className="text-xl font-semibold mb-4 text-gradient">למה תרצה/י להחליף את המתנה?</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <motion.button
-                    onClick={() => confirmChangeGift()}
-                    className="bg-white/10 hover:bg-white/20 transition-colors p-4 rounded-lg magnetic"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    יקר מדי
-                  </motion.button>
-                  <motion.button
-                    onClick={() => confirmChangeGift()}
-                    className="bg-white/10 hover:bg-white/20 transition-colors p-4 rounded-lg magnetic"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    לא מתאים לטעם
-                  </motion.button>
-                </div>
-              </motion.div>
-            )}
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              <Link
-                href="/"
-                className="block text-center text-gray-300 hover:text-white transition-colors hover-lift"
-              >
-                חזרה להתחלה
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Animated background shapes */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          {backgroundPoints.map((point) => (
-            <motion.div
-              key={point.id}
-              className="absolute rounded-full bg-white/5"
-              initial={{
-                x: point.initialX,
-                y: point.initialY,
-                scale: point.scale,
-              }}
-              animate={{
-                x: point.targetX,
-                y: point.targetY,
-                scale: [1, 2, 1],
-              }}
-              transition={{
-                duration: point.duration,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              style={{
-                width: `${point.size}px`,
-                height: `${point.size}px`,
-                filter: 'blur(40px)',
-              }}
+        {/* Gift Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="bg-white/10 backdrop-blur-md rounded-2xl overflow-hidden shadow-xl"
+        >
+          <div className="relative h-[300px] md:h-[400px]">
+            <Image
+              src={giftSuggestion.image}
+              alt={giftSuggestion.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 800px"
             />
-          ))}
-        </div>
-      </main>
-    </>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            
+            {/* Price Tag */}
+            <div className="absolute top-4 left-4 bg-white/90 text-black px-4 py-2 rounded-full font-bold">
+              ₪{giftSuggestion.price.toFixed(2)}
+            </div>
+          </div>
+
+          <div className="p-6 md:p-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">{giftSuggestion.title}</h2>
+            <p className="text-lg text-white/80 mb-6">{giftSuggestion.description}</p>
+            
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href={giftSuggestion.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-pink-500 hover:bg-pink-600 transition-colors px-6 py-3 rounded-full font-semibold text-center flex items-center justify-center gap-2"
+              >
+                <span>קנה עכשיו</span>
+                <FontAwesomeIcon icon={faExternalLinkAlt} />
+              </a>
+              
+              <Link
+                href="/quiz"
+                className="flex-1 bg-white/10 hover:bg-white/20 transition-colors px-6 py-3 rounded-full font-semibold text-center flex items-center justify-center gap-2"
+              >
+                <FontAwesomeIcon icon={faArrowLeft} />
+                <span>חזרה לשאלון</span>
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Timestamp */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-center mt-8 text-white/60"
+        >
+          <p>
+            התוצאות התקבלו בתאריך:{' '}
+            {new Date(giftSuggestion.timestamp).toLocaleDateString('he-IL', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </p>
+        </motion.div>
+      </div>
+    </div>
   );
 } 
