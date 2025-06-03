@@ -1,0 +1,17 @@
+{
+  "gift": {
+    "title": "מטחנת קפה חכמה Breville Smart Grinder Pro",
+    "url": "https://example-store.com/product/123",
+    "image": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e",
+    "price": 299,
+    "description": "מטחנת קפה חכמה עם 60 הגדרות טחינה, מושלמת לחובבי קפה ובישול. עיצוב מינימליסטי ונקי שיתאים לכל מטבח מודרני."
+  },
+  "orderNumber": "AG-789456ABCD",
+  "replacementReasons": [
+    "המחיר גבוה מדי",
+    "לא מתאים לטעם שלי",
+    "רוצה משהו יותר מעשי",
+    "רוצה משהו יותר מיוחד",
+    "לא מתאים לגיל"
+  ]
+} 

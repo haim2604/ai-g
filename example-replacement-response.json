@@ -1,0 +1,16 @@
+{
+  "gift": {
+    "title": "מטחנת קפה ידנית איכותית",
+    "url": "https://example-store.com/product/456",
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085",
+    "price": 89,
+    "description": "מטחנת קפה ידנית איכותית במחיר נוח, מושלמת לאוהבי קפה טרי טחון"
+  },
+  "orderNumber": "AG-123DEF789",
+  "replacementReasons": [
+    "רוצה אפשרות אחרת",
+    "לא מתאים לצרכים שלי",
+    "המחיר לא הולם",
+    "אני מחפש משהו אחר"
+  ]
+} 
