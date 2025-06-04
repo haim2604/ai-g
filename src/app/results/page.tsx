@@ -35,6 +35,19 @@ interface GiftSuggestion {
   replacementReasons?: string[];
 }
 
+interface ReplacementResponse {
+  gift: {
+    title: string;
+    url: string;
+    image: string;
+    price: number;
+    description: string;
+  };
+  orderNumber: string;
+  replacementReasons: string[];
+  greeting?: string;
+}
+
 export default function Results() {
   const [giftSuggestion, setGiftSuggestion] = useState<GiftSuggestion | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -89,9 +102,9 @@ export default function Results() {
         throw new Error('Network response was not ok');
       }
 
-      const data = await response.json();
+      const data: ReplacementResponse = await response.json();
       console.log('🔄 Replacement data:', data);
-      console.log('🔄 Replacement greeting:', (data as any).greeting);
+      console.log('🔄 Replacement greeting:', data.greeting);
       
       // Update the gift suggestion with the new gift
       const newGiftSuggestion = {
@@ -100,7 +113,7 @@ export default function Results() {
         image: data.gift.image,
         price: data.gift.price,
         description: data.gift.description,
-        greeting: (data as any).greeting || "🎁 מתנה חלופית מיוחדת בשבילך!",
+        greeting: data.greeting || "🎁 מתנה חלופית מיוחדת בשבילך!",
         orderNumber: data.orderNumber,
         replacementReasons: data.replacementReasons,
         timestamp: new Date().toISOString()
@@ -186,7 +199,7 @@ export default function Results() {
         await navigator.clipboard.writeText(`${getShareText()}\n${getShareUrl()}`);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
-      } catch (fallbackError) {
+      } catch {
         alert('לא ניתן להעתיק את הקישור');
       }
     }
@@ -284,8 +297,8 @@ export default function Results() {
                   className="relative"
                 >
                   {/* Quote decoration */}
-                  <div className="absolute -top-4 -right-2 text-white/20 text-6xl font-serif">"</div>
-                  <div className="absolute -bottom-8 -left-2 text-white/20 text-6xl font-serif">"</div>
+                  <div className="absolute -top-4 -right-2 text-white/20 text-6xl font-serif">&quot;</div>
+                  <div className="absolute -bottom-8 -left-2 text-white/20 text-6xl font-serif">&quot;</div>
                   
                   <p className="greeting-text text-lg md:text-xl leading-relaxed font-medium px-8 py-4">
                     {giftSuggestion.greeting}

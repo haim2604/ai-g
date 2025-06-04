@@ -43,6 +43,7 @@ interface Option {
 }
 
 interface GiftResponse {
+  greeting?: string;
   gift: {
     title: string;
     url: string;
@@ -273,7 +274,7 @@ export default function Quiz() {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', checkMobile);
     };
-  }, []);
+  }, [isMobile]);
 
   const formatAnswersForAPI = () => {
     const traits: Record<string, string> = {};
@@ -325,7 +326,7 @@ export default function Quiz() {
       setIsLoading(true);
       const formattedData = formatAnswersForAPI();
       
-      console.log('�� Sending request to production server...');
+      console.log(' Sending request to production server...');
       const response = await fetch('https://gserver-0do4.onrender.com/api/gifts/get-gift', {
         method: 'POST',
         headers: {
@@ -346,7 +347,7 @@ export default function Quiz() {
       console.log('💬 Greeting field:', data.gift.greeting);
       console.log('🔍 All data keys:', Object.keys(data));
       console.log('🔍 Gift keys:', Object.keys(data.gift || {}));
-      console.log('🔍 Direct greeting on data:', (data as any).greeting);
+      console.log('🔍 Direct greeting on data:', data.greeting);
       console.log('🔍 Gift greeting value:', data.gift?.greeting);
       
       // Store only the gift suggestion with timestamp - explicit field mapping
@@ -356,7 +357,7 @@ export default function Quiz() {
         image: data.gift.image,
         price: data.gift.price,
         description: data.gift.description,
-        greeting: (data as any).greeting || "🎁 מתנה מיוחדת בשבילך!", // greeting is on data, not data.gift
+        greeting: data.greeting || "🎁 מתנה מיוחדת בשבילך!", // greeting is on data, not data.gift
         orderNumber: data.orderNumber,
         replacementReasons: data.replacementReasons,
         timestamp: new Date().toISOString()
