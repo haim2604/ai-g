@@ -516,19 +516,20 @@ html {
 @media (max-width: 768px) {
   /* Ensure content is always visible */
   .quiz-content {
-    height: var(--safe-area-height);
-    min-height: var(--safe-area-height);
+    min-height: calc(100vh - 2rem);
+    min-height: calc(100dvh - 2rem);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    overflow-y: auto;
+    justify-content: space-evenly;
     padding: 1rem 0;
+    padding-top: max(env(safe-area-inset-top), 1rem);
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
   }
   
   .quiz-question {
     flex-shrink: 0;
-    margin-bottom: auto;
-    padding-top: max(env(safe-area-inset-top), 1rem);
+    text-align: center;
+    padding: 0 1rem;
   }
   
   .quiz-options {
@@ -536,13 +537,27 @@ html {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 0;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .quiz-options > * {
+    width: 100%;
+  }
+  
+  /* For 2-column layout on mobile landscape */
+  @media (max-width: 768px) and (orientation: landscape) {
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
   }
   
   .quiz-progress {
     flex-shrink: 0;
-    margin-top: auto;
-    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+    text-align: center;
+    padding: 0 1rem;
   }
 }
 
