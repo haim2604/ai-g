@@ -228,6 +228,7 @@ export default function Results() {
   const [isReplacingGift, setIsReplacingGift] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1);
 
   useEffect(() => {
     const loadGiftSuggestion = () => {
@@ -239,7 +240,38 @@ export default function Results() {
       setIsLoading(false);
     };
 
+    // Zoom detection and viewport adjustment
+    const handleZoomChange = () => {
+      const currentZoom = window.devicePixelRatio || 1;
+      const visualViewport = window.visualViewport;
+      
+      if (visualViewport) {
+        const scale = visualViewport.scale || 1;
+        setZoomLevel(scale);
+        
+        // Adjust viewport height based on zoom level
+        document.documentElement.style.setProperty('--zoom-adjusted-height', `${100 / scale}vh`);
+      } else {
+        setZoomLevel(currentZoom);
+      }
+    };
+
+    // Initial load
     loadGiftSuggestion();
+    handleZoomChange();
+
+    // Listen for zoom changes
+    window.addEventListener('resize', handleZoomChange);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleZoomChange);
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleZoomChange);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleZoomChange);
+      }
+    };
   }, []);
 
   const handleReplaceGift = () => {
@@ -404,19 +436,24 @@ export default function Results() {
   }
 
   return (
-    <div className="min-h-screen gradient-animation">
-      <div className="max-w-4xl mx-auto p-4 py-8">
+    <div className="min-h-screen min-h-dvh gradient-animation safe-area-top safe-area-bottom">
+      <div className="max-w-4xl mx-auto p-4 py-6 sm:py-8">
         {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <FontAwesomeIcon icon={faGift} className="mr-4 text-pink-400" />
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 px-2" style={{
+            fontSize: 'clamp(1.5rem, 6vw, 3rem)',
+            lineHeight: '1.2'
+          }}>
+            <FontAwesomeIcon icon={faGift} className="mr-2 sm:mr-4 text-pink-400" />
             המתנה המושלמת בשבילך
           </h1>
-          <p className="text-xl text-white/80">
+          <p className="text-base sm:text-lg md:text-xl text-white/80 px-2" style={{
+            fontSize: 'clamp(0.9rem, 4vw, 1.25rem)'
+          }}>
             בהתבסס על התשובות שלך, מצאנו את המתנה המושלמת
           </p>
           {giftSuggestion.orderNumber && (
@@ -474,7 +511,12 @@ export default function Results() {
                   <div className="absolute -top-4 -right-2 text-white/20 text-6xl font-serif">&quot;</div>
                   <div className="absolute -bottom-8 -left-2 text-white/20 text-6xl font-serif">&quot;</div>
                   
-                  <p className="greeting-text text-lg md:text-xl leading-relaxed font-medium px-8 py-4">
+                  <p className="greeting-text text-base sm:text-lg md:text-xl leading-relaxed font-medium px-4 sm:px-8 py-4" style={{
+                    fontSize: 'clamp(0.9rem, 4vw, 1.25rem)',
+                    lineHeight: '1.6',
+                    wordBreak: 'break-word',
+                    overflowWrap: 'break-word'
+                  }}>
                     {giftSuggestion.greeting}
                   </p>
                 </motion.div>
@@ -594,8 +636,17 @@ export default function Results() {
           </div>
 
           <div className="p-6 md:p-8">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">{giftSuggestion.title}</h2>
-            <p className="text-lg text-white/80 mb-6">{giftSuggestion.description}</p>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 px-2" style={{
+              fontSize: 'clamp(1.1rem, 5vw, 1.875rem)',
+              lineHeight: '1.3',
+              wordBreak: 'break-word'
+            }}>{giftSuggestion.title}</h2>
+            <p className="text-base sm:text-lg text-white/80 mb-6 px-2" style={{
+              fontSize: 'clamp(0.9rem, 4vw, 1.125rem)',
+              lineHeight: '1.6',
+              wordBreak: 'break-word',
+              overflowWrap: 'break-word'
+            }}>{giftSuggestion.description}</p>
             
             {/* Feedback for Gift */}
             {giftSuggestion.requestId && (

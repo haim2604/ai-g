@@ -476,7 +476,7 @@ export default function Quiz() {
   }
 
   return (
-    <div className="min-h-screen gradient-animation overflow-hidden relative" ref={containerRef}>
+    <div className="min-h-screen min-h-dvh gradient-animation overflow-hidden relative safe-area-top safe-area-bottom" ref={containerRef}>
       {!isMobile && <div ref={cursorRef} className="custom-cursor" />}
       
       {/* Background Image */}
@@ -518,14 +518,18 @@ export default function Quiz() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={animationSettings.contentTransition}
-          className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4 md:p-8"
+          className="relative z-10 flex flex-col items-center justify-center min-h-screen min-h-dvh p-4 md:p-8"
         >
           <div className="w-full max-w-2xl mx-auto">
             <motion.h2
               initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05, duration: animationSettings.contentTransition.duration }}
-              className="text-3xl md:text-5xl font-bold mb-8 md:mb-12 text-center text-gradient"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 md:mb-12 text-center text-gradient px-2"
+              style={{ 
+                fontSize: isMobile ? 'clamp(1.5rem, 6vw, 2.5rem)' : undefined,
+                lineHeight: isMobile ? '1.2' : undefined 
+              }}
             >
               {questions[currentQuestion].question}
             </motion.h2>
@@ -565,7 +569,7 @@ export default function Quiz() {
               </motion.div>
             ) : (
               <motion.div 
-                className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"
                 initial="hidden"
                 animate="visible"
                 variants={{
@@ -622,7 +626,10 @@ export default function Quiz() {
                         transition: { duration: 0.15 }
                       } : undefined}
                     />
-                    <div className="relative p-6 text-xl text-center flex items-center justify-center gap-3">
+                    <div className="relative p-4 sm:p-6 text-base sm:text-lg md:text-xl text-center flex items-center justify-center gap-3 min-h-[44px]" style={{
+                      fontSize: isMobile ? 'clamp(0.9rem, 4vw, 1.1rem)' : undefined,
+                      padding: isMobile ? '16px 12px' : undefined
+                    }}>
                       {option.icon && (
                         <motion.div
                           initial={!shouldReduceMotion && !isMobile ? { rotate: -5, scale: 0.9 } : { scale: 1 }}
@@ -663,6 +670,12 @@ export default function Quiz() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: index * animationSettings.staggerDelay + 0.08, duration: animationSettings.buttonTransition.duration }}
+                        className="leading-tight break-words hyphens-auto"
+                        style={{
+                          wordBreak: 'break-word',
+                          overflowWrap: 'break-word',
+                          hyphens: 'auto'
+                        }}
                       >
                         {option.text}
                       </motion.span>
@@ -676,9 +689,11 @@ export default function Quiz() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.15, duration: animationSettings.contentTransition.duration }}
-              className="mt-12 text-center"
+              className="mt-8 sm:mt-12 text-center px-2"
             >
-              <p className="text-lg mb-4">
+              <p className="text-base sm:text-lg mb-3 sm:mb-4" style={{
+                fontSize: isMobile ? 'clamp(0.9rem, 4vw, 1rem)' : undefined
+              }}>
                 שאלה {currentQuestion + 1} מתוך {questions.length}
               </p>
               <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden">
