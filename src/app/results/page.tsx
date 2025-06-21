@@ -228,7 +228,6 @@ export default function Results() {
   const [isReplacingGift, setIsReplacingGift] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(1);
 
   useEffect(() => {
     const loadGiftSuggestion = () => {
@@ -242,17 +241,13 @@ export default function Results() {
 
     // Zoom detection and viewport adjustment
     const handleZoomChange = () => {
-      const currentZoom = window.devicePixelRatio || 1;
       const visualViewport = window.visualViewport;
       
       if (visualViewport) {
         const scale = visualViewport.scale || 1;
-        setZoomLevel(scale);
         
         // Adjust viewport height based on zoom level
         document.documentElement.style.setProperty('--zoom-adjusted-height', `${100 / scale}vh`);
-      } else {
-        setZoomLevel(currentZoom);
       }
     };
 
