@@ -249,7 +249,6 @@ export default function Quiz() {
   
   // זיהוי מכשיר נייד
   const [isMobile, setIsMobile] = useState(false);
-  const [viewportHeight, setViewportHeight] = useState(0);
 
   useLayoutEffect(() => {
     setIsMounted(true);
@@ -262,7 +261,6 @@ export default function Quiz() {
     const updateViewportHeight = () => {
       // Get the actual viewport height
       const vh = window.visualViewport?.height || window.innerHeight;
-      setViewportHeight(vh);
       
       // Update CSS custom property for dynamic height
       document.documentElement.style.setProperty('--actual-vh', `${vh}px`);
