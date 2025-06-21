@@ -6,7 +6,7 @@ import Navigation from "@/components/layout/Navigation";
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'מוצא המתנות - מציאת מתנות מושלמות בעזרת AI',
+  title: 'GIFT.P.T - מציאת מתנות מושלמות בעזרת AI',
   description: 'מערכת חכמה למציאת מתנות מותאמות אישית בעזרת בינה מלאכותית',
   metadataBase: new URL('https://gift-finder.vercel.app'),
 }

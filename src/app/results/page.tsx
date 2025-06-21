@@ -13,7 +13,10 @@ import {
   faTimes, 
   faShare,
   faCopy,
-  faCheck
+  faCheck,
+  faThumbsUp,
+  faThumbsDown,
+  faMeh
 } from '@fortawesome/free-solid-svg-icons';
 import { 
   faFacebook, 
@@ -33,6 +36,7 @@ interface GiftSuggestion {
   timestamp: string;
   orderNumber?: string;
   replacementReasons?: string[];
+  requestId?: string;
 }
 
 interface ReplacementResponse {
@@ -47,6 +51,175 @@ interface ReplacementResponse {
   replacementReasons: string[];
   greeting?: string;
 }
+
+interface FeedbackProps {
+  type: 'greeting' | 'gift';
+  requestId: string;
+  onFeedbackSent?: (rating: string) => void;
+}
+
+const FeedbackComponent = ({ type, requestId, onFeedbackSent }: FeedbackProps) => {
+  const [selectedRating, setSelectedRating] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleFeedback = async (rating: 'like' | 'dislike' | 'neutral') => {
+    if (isSubmitting || isSubmitted) return;
+    
+    setIsSubmitting(true);
+    setSelectedRating(rating);
+
+    try {
+      const endpoint = type === 'greeting' 
+        ? 'https://aig-bef3.onrender.com/api/gifts/feedback/greeting'
+        : 'https://aig-bef3.onrender.com/api/gifts/feedback/gift';
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionId: requestId,
+          rating: rating
+        }),
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        onFeedbackSent?.(rating);
+      } else {
+        console.error('Failed to submit feedback:', response.statusText);
+        setSelectedRating(null);
+      }
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      setSelectedRating(null);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const getFeedbackIcon = (rating: string) => {
+    switch (rating) {
+      case 'like': return faThumbsUp;
+      case 'dislike': return faThumbsDown;
+      case 'neutral': return faMeh;
+      default: return faMeh;
+    }
+  };
+
+  const getFeedbackColor = (rating: string) => {
+    switch (rating) {
+      case 'like': return 'text-green-400';
+      case 'dislike': return 'text-red-400';
+      case 'neutral': return 'text-yellow-400';
+      default: return 'text-gray-400';
+    }
+  };
+
+  const getFeedbackText = (rating: string) => {
+    switch (rating) {
+      case 'like': return 'אהבתי';
+      case 'dislike': return 'לא אהבתי';
+      case 'neutral': return 'אדיש';
+      default: return '';
+    }
+  };
+
+  if (isSubmitted) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5, y: 20 }}
+        animate={{ 
+          opacity: 1, 
+          scale: 1, 
+          y: 0,
+          transition: {
+            type: "spring",
+            stiffness: 500,
+            damping: 20,
+            duration: 0.6
+          }
+        }}
+        className="flex items-center justify-center gap-3 text-green-400 text-sm font-medium"
+      >
+        <motion.div
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ 
+            scale: 1, 
+            rotate: 0,
+            transition: { delay: 0.2, type: "spring", stiffness: 400 }
+          }}
+        >
+          <FontAwesomeIcon icon={faCheck} className="text-lg" />
+        </motion.div>
+        <motion.span
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ 
+            opacity: 1, 
+            x: 0,
+            transition: { delay: 0.3 }
+          }}
+        >
+          תודה על הפידבק!
+        </motion.span>
+      </motion.div>
+    );
+  }
+
+  return (
+    <div className="flex items-center justify-center gap-3">
+      <span className="text-xs text-white/70 mr-3 font-medium">
+        {type === 'greeting' ? 'מה דעתך על הברכה?' : 'מה דעתך על המתנה?'}
+      </span>
+      
+      {(['like', 'dislike', 'neutral'] as const).map((rating, index) => (
+        <motion.button
+          key={rating}
+          onClick={() => handleFeedback(rating)}
+          disabled={isSubmitting}
+          whileHover={{ scale: 1.15, rotate: [0, -5, 5, 0] }}
+          whileTap={{ scale: 0.9 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+          className={`
+            relative group p-3 rounded-full transition-all duration-300 shadow-lg
+            ${selectedRating === rating && isSubmitting
+              ? 'bg-white/30 scale-110 shadow-xl'
+              : 'bg-white/10 hover:bg-white/25 hover:shadow-xl'
+            }
+            ${isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'}
+          `}
+        >
+          {isSubmitting && selectedRating === rating ? (
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <FontAwesomeIcon
+                icon={getFeedbackIcon(rating)}
+                className={`text-lg transition-colors duration-300 ${
+                  selectedRating === rating && isSubmitting
+                    ? getFeedbackColor(rating)
+                    : 'text-white/70 group-hover:text-white'
+                }`}
+              />
+            </motion.div>
+          )}
+          
+          {/* Tooltip */}
+          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+            {getFeedbackText(rating)}
+          </div>
+        </motion.button>
+      ))}
+    </div>
+  );
+};
 
 export default function Results() {
   const [giftSuggestion, setGiftSuggestion] = useState<GiftSuggestion | null>(null);
@@ -116,7 +289,8 @@ export default function Results() {
         greeting: data.greeting || "🎁 מתנה חלופית מיוחדת בשבילך!",
         orderNumber: data.orderNumber,
         replacementReasons: data.replacementReasons,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        requestId: giftSuggestion.requestId
       };
 
       setGiftSuggestion(newGiftSuggestion);
@@ -376,6 +550,23 @@ export default function Results() {
                 />
               </div>
             </div>
+            
+            {/* Feedback for Greeting */}
+            {giftSuggestion.requestId && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="mt-4 flex justify-center"
+              >
+                <div className="bg-white/5 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10">
+                  <FeedbackComponent
+                    type="greeting"
+                    requestId={giftSuggestion.requestId}
+                  />
+                </div>
+              </motion.div>
+            )}
           </motion.div>
         )}
 
@@ -406,18 +597,35 @@ export default function Results() {
             <h2 className="text-2xl md:text-3xl font-bold mb-4">{giftSuggestion.title}</h2>
             <p className="text-lg text-white/80 mb-6">{giftSuggestion.description}</p>
             
+            {/* Feedback for Gift */}
+            {giftSuggestion.requestId && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="mb-6 flex justify-center"
+              >
+                <div className="bg-white/5 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10">
+                  <FeedbackComponent
+                    type="gift"
+                    requestId={giftSuggestion.requestId}
+                  />
+                </div>
+              </motion.div>
+            )}
+            
             <div className="flex flex-col gap-4">
               {/* Main actions row */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a
-                  href={giftSuggestion.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 bg-pink-500 hover:bg-pink-600 transition-colors px-6 py-3 rounded-full font-semibold text-center flex items-center justify-center gap-2"
-                >
-                  <span>קנה עכשיו</span>
-                  <FontAwesomeIcon icon={faExternalLinkAlt} />
-                </a>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href={giftSuggestion.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-pink-500 hover:bg-pink-600 transition-colors px-6 py-3 rounded-full font-semibold text-center flex items-center justify-center gap-2"
+              >
+                <span>קנה עכשיו</span>
+                <FontAwesomeIcon icon={faExternalLinkAlt} />
+              </a>
                 
                 {giftSuggestion.replacementReasons && giftSuggestion.replacementReasons.length > 0 && (
                   <button
@@ -449,14 +657,14 @@ export default function Results() {
                   <FontAwesomeIcon icon={faShare} />
                   <span>שתף ברשתות</span>
                 </button>
-                
-                <Link
-                  href="/quiz"
-                  className="flex-1 bg-white/10 hover:bg-white/20 transition-colors px-6 py-3 rounded-full font-semibold text-center flex items-center justify-center gap-2"
-                >
-                  <FontAwesomeIcon icon={faArrowLeft} />
-                  <span>חזרה לשאלון</span>
-                </Link>
+              
+              <Link
+                href="/quiz"
+                className="flex-1 bg-white/10 hover:bg-white/20 transition-colors px-6 py-3 rounded-full font-semibold text-center flex items-center justify-center gap-2"
+              >
+                <FontAwesomeIcon icon={faArrowLeft} />
+                <span>חזרה לשאלון</span>
+              </Link>
                 
                 <button
                   onClick={() => {

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 const defaultMetadata: Metadata = {
-  title: 'מוצא המתנות - מתנות מותאמות אישית בעזרת AI',
+  title: 'GIFT.P.T - מתנות מותאמות אישית בעזרת AI',
   description: 'מצא את המתנה המושלמת לכל אחד בעזרת הבינה המלאכותית שלנו. אנחנו עוזרים לך למצוא מתנות מותאמות אישית באלי אקספרס.',
   keywords: [
     'מתנות',
@@ -14,32 +14,32 @@ const defaultMetadata: Metadata = {
     'מתנות למשפחה',
     'מתנות לעובדים',
   ],
-  authors: [{ name: 'מוצא המתנות' }],
-  creator: 'מוצא המתנות',
-  publisher: 'מוצא המתנות',
+  authors: [{ name: 'GIFT.P.T' }],
+  creator: 'GIFT.P.T',
+  publisher: 'GIFT.P.T',
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
   },
   openGraph: {
     type: 'website',
     locale: 'he_IL',
     url: 'https://gift-finder.com',
-    siteName: 'מוצא המתנות',
-    title: 'מוצא המתנות - מתנות מותאמות אישית בעזרת AI',
+    siteName: 'GIFT.P.T',
+    title: 'GIFT.P.T - מתנות מותאמות אישית בעזרת AI',
     description: 'מצא את המתנה המושלמת לכל אחד בעזרת הבינה המלאכותית שלנו',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'מוצא המתנות - מתנות מותאמות אישית',
+        alt: 'GIFT.P.T - מתנות מותאמות אישית',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'מוצא המתנות - מתנות מותאמות אישית בעזרת AI',
+    title: 'GIFT.P.T - מתנות מותאמות אישית בעזרת AI',
     description: 'מצא את המתנה המושלמת לכל אחד בעזרת הבינה המלאכותית שלנו',
     images: ['/og-image.jpg'],
   },

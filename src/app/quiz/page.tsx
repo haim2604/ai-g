@@ -54,6 +54,7 @@ interface GiftResponse {
   };
   orderNumber: string;
   replacementReasons: string[];
+  requestId?: string; // יתווסף על ידי הקליינט
 }
 
 interface Question {
@@ -72,7 +73,7 @@ const questions: Question[] = [
     options: [
       { text: 'בן/בת זוג', icon: faHeart },
       { text: 'חבר/חברה קרובים', icon: faUserGraduate },
-      { text: 'בן משפחה (הורה, אח/אחות, ילד)', icon: faHome },
+      { text: 'בן משפחה', icon: faHome },
       { text: 'עמית לעבודה', icon: faUserTie },
       { text: 'אחר' }
     ],
@@ -83,7 +84,7 @@ const questions: Question[] = [
     question: 'איזו פעילות הכי משמחת אותם בזמן הפנוי שלהם?',
     backgroundImage: 'https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?q=80&w=2070&auto=format&fit=crop',
     options: [
-      { text: 'משחק עם צעצועים או יצירה (לילדים)', icon: faChild },
+      { text: 'משחק עם צעצועים או יצירה', icon: faChild },
       { text: 'צפייה בסרטים או סדרות' },
       { text: 'בישול או אפייה', icon: faUtensils },
       { text: 'טיולים בטבע או פעילויות בחוץ', icon: faPersonWalking },
@@ -97,11 +98,11 @@ const questions: Question[] = [
     question: 'איזה סוג של חפץ או גאדג\'ט הם הכי היו מתלהבים לקבל?',
     backgroundImage: 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?q=80&w=2070&auto=format&fit=crop',
     options: [
-      { text: 'צעצוע או משחק (לילדים, כמו פאזל, מכונית על שלט)', icon: faChild },
-      { text: 'משהו טכנולוגי (אוזניות, שעון חכם)', icon: faLaptopCode },
-      { text: 'כלי מטבח או בית (מכונת קפה, מארגן)', icon: faHome },
+      { text: 'צעצוע או משחק', icon: faChild },
+      { text: 'משהו טכנולוגי', icon: faLaptopCode },
+      { text: 'כלי מטבח או בית', icon: faHome },
       { text: 'ציוד לטיולים או ספורט', icon: faPersonWalking },
-      { text: 'משהו יצירתי (ערכת ציור, יומן)', icon: faPalette },
+      { text: 'משהו יצירתי', icon: faPalette },
       { text: 'לא יודע, תפתיעו אותם!', icon: faGift }
     ],
     hasOtherOption: false
@@ -111,9 +112,9 @@ const questions: Question[] = [
     question: 'איזה סגנון עיצובי הכי מתאים לטעם שלהם?',
     backgroundImage: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2070&auto=format&fit=crop',
     options: [
-      { text: 'צבעוני ושובב (מתאים לילדים)', icon: faChild },
-      { text: 'מינימליסטי ונקי (לבן, שחור, אפור)' },
-      { text: 'צבעוני ותוסס (אדום, כחול, צהוב)', icon: faPalette },
+      { text: 'צבעוני ושובב', icon: faChild },
+      { text: 'מינימליסטי ונקי' },
+      { text: 'צבעוני ותוסס', icon: faPalette },
       { text: 'וינטג\' או רטרו' },
       { text: 'מודרני והייטק', icon: faLaptopCode },
       { text: 'אין לי מושג' }
@@ -125,10 +126,10 @@ const questions: Question[] = [
     question: 'מה הדבר שהם הכי צריכים כדי להקל על השגרה שלהם?',
     backgroundImage: 'https://images.unsplash.com/photo-1483058712412-4245e9b90334?q=80&w=2070&auto=format&fit=crop',
     options: [
-      { text: 'משהו שיעזור בארגון (תיק, מארגן שולחני, תיק גן לילדים)', icon: faHome },
-      { text: 'גאדג\'ט שחוסך זמן (מטען מהיר, רובוט ניקוי)', icon: faLaptopCode },
-      { text: 'משהו לנוחות בבית (כרית, שמיכה, צעצוע מרגיע)', icon: faHome },
-      { text: 'משהו שמשפר את מצב הרוח (נרות, תאורה, משחק)', icon: faHeart },
+      { text: 'משהו שיעזור בארגון', icon: faHome },
+      { text: 'גאדג\'ט שחוסך זמן', icon: faLaptopCode },
+      { text: 'משהו לנוחות בבית', icon: faHome },
+      { text: 'משהו שמשפר את מצב הרוח', icon: faHeart },
       { text: 'אחר' }
     ],
     hasOtherOption: true
@@ -138,7 +139,7 @@ const questions: Question[] = [
     question: 'אם הם היו יכולים ללמוד משהו חדש, מה זה היה?',
     backgroundImage: 'https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?q=80&w=2070&auto=format&fit=crop',
     options: [
-      { text: 'משחק או יצירה (ציור, בנייה, לילדים)', icon: faPalette },
+      { text: 'משחק או יצירה', icon: faPalette },
       { text: 'בישול או אפייה', icon: faUtensils },
       { text: 'צילום או עריכת וידאו', icon: faCamera },
       { text: 'נגינה על כלי מוזיקלי', icon: faMusic },
@@ -152,11 +153,11 @@ const questions: Question[] = [
     question: 'איזו מתנה שהם קיבלו בעבר ממש ריגשה אותם?',
     backgroundImage: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=2070&auto=format&fit=crop',
     options: [
-      { text: 'משהו אישי ומרגש (תמונה, מכתב, ציור של ילד)', icon: faHeart },
-      { text: 'צעצוע או משחק (לילדים)', icon: faChild },
+      { text: 'משהו אישי ומרגש', icon: faHeart },
+      { text: 'צעצוע או משחק', icon: faChild },
       { text: 'גאדג\'ט טכנולוגי', icon: faLaptopCode },
       { text: 'משהו שימושי ליום יום', icon: faHome },
-      { text: 'חוויה (שובר, כרטיס)', icon: faGift },
+      { text: 'חוויה', icon: faGift },
       { text: 'לא יודע' }
     ],
     hasOtherOption: false
@@ -166,8 +167,8 @@ const questions: Question[] = [
     question: 'האם הם מעדיפים מתנות שימושיות או כאלה שמפנקות?',
     backgroundImage: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=2099&auto=format&fit=crop',
     options: [
-      { text: 'שימושי (כלי עבודה, אביזרים, ציוד ללימודים)', icon: faHome },
-      { text: 'מפנק (בשמים, מוצרי טיפוח, צעצוע מהנה)', icon: faGift },
+      { text: 'שימושי', icon: faHome },
+      { text: 'מפנק', icon: faGift },
       { text: 'שילוב של שניהם', icon: faHeart },
       { text: 'אין לי מושג' }
     ],
@@ -178,7 +179,7 @@ const questions: Question[] = [
     question: 'איך הם הכי אוהבים לבלות עם חברים או משפחה?',
     backgroundImage: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=2070&auto=format&fit=crop',
     options: [
-      { text: 'משחקים או פעילויות יצירתיות (לילדים)', icon: faChild },
+      { text: 'משחקים או פעילויות יצירתיות', icon: faChild },
       { text: 'ערב משחקים או סרטים', icon: faGamepad },
       { text: 'ארוחה משותפת או על האש', icon: faUtensils },
       { text: 'טיול או פעילות בחוץ', icon: faPersonWalking },
@@ -192,11 +193,11 @@ const questions: Question[] = [
     question: 'אם היית בוחר קטגוריה למתנה שתשמח אותם, מה היא הייתה?',
     backgroundImage: 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?q=80&w=2070&auto=format&fit=crop',
     options: [
-      { text: 'צעצועים או משחקים (לילדים)', icon: faChild },
-      { text: 'טכנולוגיה (אוזניות, גאדג\'טים)', icon: faLaptopCode },
-      { text: 'בית ומטבח (כלים, עיצוב)', icon: faHome },
-      { text: 'אופנה וסטייל (בגדים, תכשיטים)', icon: faTshirt },
-      { text: 'תחביבים ופנאי (ספרים, משחקים)', icon: faBook },
+      { text: 'צעצועים או משחקים', icon: faChild },
+      { text: 'טכנולוגיה', icon: faLaptopCode },
+      { text: 'בית ומטבח', icon: faHome },
+      { text: 'אופנה וסטייל', icon: faTshirt },
+      { text: 'תחביבים ופנאי', icon: faBook },
       { text: 'משהו מפתיע!', icon: faGift }
     ],
     hasOtherOption: false
@@ -206,14 +207,14 @@ const questions: Question[] = [
     question: 'מה טווח הגיל שלהם?',
     backgroundImage: 'https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?q=80&w=2071&auto=format&fit=crop',
     options: [
-      { text: '3–6 (גיל רך)', icon: faBaby },
-      { text: '7–12 (ילדים)', icon: faChild },
-      { text: '13–17 (נוער)', icon: faUserGraduate },
-      { text: '18–25 (צעירים)', icon: faUserGraduate },
-      { text: '26–35 (מבוגרים צעירים)', icon: faUserTie },
-      { text: '36–50 (מבוגרים)', icon: faUserTie },
-      { text: '51–65 (מבוגרים בכירים)', icon: faUserTie },
-      { text: '65+ (קשישים)', icon: faPersonCane }
+      { text: '3–6', icon: faBaby },
+      { text: '7–12', icon: faChild },
+      { text: '13–17', icon: faUserGraduate },
+      { text: '18–25', icon: faUserGraduate },
+      { text: '26–35', icon: faUserTie },
+      { text: '36–50', icon: faUserTie },
+      { text: '51–65', icon: faUserTie },
+      { text: '65+', icon: faPersonCane }
     ],
     hasOtherOption: false
   }
@@ -336,7 +337,7 @@ export default function Quiz() {
       });
 
       console.log('📡 Response status:', response.status);
-      
+
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.status}`);
       }
@@ -350,6 +351,9 @@ export default function Quiz() {
       console.log('🔍 Direct greeting on data:', data.greeting);
       console.log('🔍 Gift greeting value:', data.gift?.greeting);
       
+      // Generate unique requestId for feedback
+      const requestId = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
       // Store only the gift suggestion with timestamp - explicit field mapping
       const dataToStore = {
         title: data.gift.title,
@@ -360,7 +364,8 @@ export default function Quiz() {
         greeting: data.greeting || "🎁 מתנה מיוחדת בשבילך!", // greeting is on data, not data.gift
         orderNumber: data.orderNumber,
         replacementReasons: data.replacementReasons,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        requestId: requestId
       };
       
       console.log('💾 Data to store:', dataToStore);
@@ -691,31 +696,31 @@ export default function Quiz() {
 
       {/* Animated background shapes - מופחת למובייל */}
       {!shouldReduceMotion && (
-        <div className="fixed inset-0 overflow-hidden pointer-events-none z-20">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-20">
           {backgroundPoints.slice(0, isMobile ? 3 : 6).map((point) => (
-            <motion.div
-              key={point.id}
+          <motion.div
+            key={point.id}
               className={`absolute ${isMobile ? 'w-20 h-20' : 'w-32 h-32'} rounded-full bg-white/3`}
-              initial={{
-                x: point.initialX,
-                y: point.initialY,
-              }}
-              animate={{
-                x: point.targetX,
-                y: point.targetY,
+            initial={{
+              x: point.initialX,
+              y: point.initialY,
+            }}
+            animate={{
+              x: point.targetX,
+              y: point.targetY,
                 scale: isMobile ? [1, 1.2, 1] : [1, 1.5, 1],
-              }}
-              transition={{
-                duration: point.duration,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              style={{
+            }}
+            transition={{
+              duration: point.duration,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            style={{
                 filter: 'blur(30px)',
-              }}
-            />
-          ))}
-        </div>
+            }}
+          />
+        ))}
+      </div>
       )}
 
       <AnimatePresence>
@@ -749,37 +754,37 @@ export default function Quiz() {
                 </motion.div>
                 {!shouldReduceMotion && (
                   <>
-                    <motion.div
-                      animate={{
-                        opacity: [0, 1, 0],
+                <motion.div
+                  animate={{
+                    opacity: [0, 1, 0],
                         scale: [0.8, 1.1, 0.8],
-                      }}
-                      transition={{
-                        duration: 1.5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        repeatDelay: 0.5
-                      }}
-                      className="absolute -top-3 -right-3 text-2xl text-yellow-400"
-                    >
-                      <FontAwesomeIcon icon={faStar} />
-                    </motion.div>
-                    <motion.div
-                      animate={{
-                        opacity: [0, 1, 0],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    repeatDelay: 0.5
+                  }}
+                  className="absolute -top-3 -right-3 text-2xl text-yellow-400"
+                >
+                  <FontAwesomeIcon icon={faStar} />
+                </motion.div>
+                <motion.div
+                  animate={{
+                    opacity: [0, 1, 0],
                         scale: [0.8, 1.1, 0.8],
-                      }}
-                      transition={{
-                        duration: 1.5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 0.75,
-                        repeatDelay: 0.5
-                      }}
-                      className="absolute -bottom-3 -left-3 text-2xl text-purple-400"
-                    >
-                      <FontAwesomeIcon icon={faMagic} />
-                    </motion.div>
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.75,
+                    repeatDelay: 0.5
+                  }}
+                  className="absolute -bottom-3 -left-3 text-2xl text-purple-400"
+                >
+                  <FontAwesomeIcon icon={faMagic} />
+                </motion.div>
                   </>
                 )}
               </div>

@@ -7,14 +7,6 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-16">
           <Logo />
           <div className="flex items-center gap-4">
-            <a
-              href="https://github.com/yourusername/gift-finder"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/80 hover:text-white transition-colors"
-            >
-              GitHub
-            </a>
           </div>
         </div>
       </div>

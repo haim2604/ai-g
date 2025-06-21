@@ -54,7 +54,7 @@ export default function SplashScreen() {
             <GiftIcon className="w-24 h-24 text-white" />
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 text-center">
-            מוצא המתנות
+            GIFT.P.T
           </h1>
           <div className="text-xl text-white/80 mb-8 text-center">
             נמצא את המתנה המושלמת עבורך
@@ -89,7 +89,7 @@ export default function SplashScreen() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-4xl md:text-6xl font-bold text-white mb-4 text-center"
         >
-          מוצא המתנות
+          GIFT.P.T
         </motion.h1>
 
         <motion.div

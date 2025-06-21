@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /
+
+# נחסום את כל הבוטים עד ההשקה הרשמית
+# לאחר ההשקה יש לשנות ל:
+# User-agent: *
+# Allow: /
+# Sitemap: https://your-domain.com/sitemap.xml 
