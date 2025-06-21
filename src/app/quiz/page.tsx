@@ -249,6 +249,7 @@ export default function Quiz() {
   
   // זיהוי מכשיר נייד
   const [isMobile, setIsMobile] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState(0);
 
   useLayoutEffect(() => {
     setIsMounted(true);
@@ -257,9 +258,25 @@ export default function Quiz() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
+
+    const updateViewportHeight = () => {
+      // Get the actual viewport height
+      const vh = window.visualViewport?.height || window.innerHeight;
+      setViewportHeight(vh);
+      
+      // Update CSS custom property for dynamic height
+      document.documentElement.style.setProperty('--actual-vh', `${vh}px`);
+      document.documentElement.style.setProperty('--safe-area-height', `${vh - 120}px`); // Reserve space for UI
+    };
     
     checkMobile();
+    updateViewportHeight();
+    
     window.addEventListener('resize', checkMobile);
+    window.addEventListener('resize', updateViewportHeight);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', updateViewportHeight);
+    }
     
     setBackgroundPoints(createBackgroundPoints(window.innerWidth, window.innerHeight));
 
@@ -274,6 +291,10 @@ export default function Quiz() {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('resize', updateViewportHeight);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', updateViewportHeight);
+      }
     };
   }, [isMobile]);
 
@@ -476,7 +497,10 @@ export default function Quiz() {
   }
 
   return (
-    <div className="min-h-screen min-h-dvh gradient-animation overflow-hidden relative safe-area-top safe-area-bottom" ref={containerRef}>
+    <div className="gradient-animation overflow-hidden relative safe-area-top safe-area-bottom" ref={containerRef} style={{
+      minHeight: 'var(--actual-vh)',
+      height: 'var(--actual-vh)'
+    }}>
       {!isMobile && <div ref={cursorRef} className="custom-cursor" />}
       
       {/* Background Image */}
@@ -518,17 +542,24 @@ export default function Quiz() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={animationSettings.contentTransition}
-          className="relative z-10 flex flex-col items-center justify-center min-h-screen min-h-dvh p-4 md:p-8"
+          className="relative z-10 flex flex-col items-center justify-start p-4 md:p-8 pt-8 pb-16 overflow-y-auto"
+          style={{
+            minHeight: 'var(--safe-area-height)',
+            height: 'var(--safe-area-height)'
+          }}
         >
-          <div className="w-full max-w-2xl mx-auto">
+          <div className={`w-full max-w-2xl mx-auto ${isMobile ? 'quiz-content' : 'flex flex-col justify-center flex-grow'}`} style={{
+            minHeight: isMobile ? undefined : 'calc(var(--safe-area-height) - 4rem)'
+          }}>
             <motion.h2
               initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05, duration: animationSettings.contentTransition.duration }}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 md:mb-12 text-center text-gradient px-2"
+              className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 md:mb-12 text-center text-gradient px-2 ${isMobile ? 'quiz-question' : 'mt-4 sm:mt-8'}`}
               style={{ 
-                fontSize: isMobile ? 'clamp(1.5rem, 6vw, 2.5rem)' : undefined,
-                lineHeight: isMobile ? '1.2' : undefined 
+                fontSize: isMobile ? 'clamp(1.2rem, 5vw, 2rem)' : undefined,
+                lineHeight: isMobile ? '1.3' : undefined,
+                marginTop: isMobile ? undefined : 'max(env(safe-area-inset-top), 2rem)'
               }}
             >
               {questions[currentQuestion].question}
@@ -569,7 +600,7 @@ export default function Quiz() {
               </motion.div>
             ) : (
               <motion.div 
-                className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"
+                className={`grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 ${isMobile ? 'quiz-options' : ''}`}
                 initial="hidden"
                 animate="visible"
                 variants={{
@@ -689,7 +720,11 @@ export default function Quiz() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.15, duration: animationSettings.contentTransition.duration }}
-              className="mt-8 sm:mt-12 text-center px-2"
+              className={`mt-8 sm:mt-12 text-center px-2 mb-4 sm:mb-8 ${isMobile ? 'quiz-progress' : ''}`}
+              style={{
+                marginBottom: isMobile ? undefined : 'max(env(safe-area-inset-bottom), 2rem)',
+                paddingBottom: isMobile ? undefined : '1rem'
+              }}
             >
               <p className="text-base sm:text-lg mb-3 sm:mb-4" style={{
                 fontSize: isMobile ? 'clamp(0.9rem, 4vw, 1rem)' : undefined

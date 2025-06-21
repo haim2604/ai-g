@@ -9,6 +9,8 @@
   --cursor-color: #fff;
   --cursor-size: 20px;
   --zoom-adjusted-height: 100vh;
+  --actual-vh: 100vh;
+  --safe-area-height: calc(100vh - 120px);
 }
 
 body {
@@ -395,6 +397,24 @@ html {
     position: relative;
   }
   
+  /* Ensure content doesn't get cut off */
+  .quiz-container {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding-top: max(env(safe-area-inset-top), 1rem);
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+  }
+  
+  /* Mobile-specific spacing adjustments */
+  .mobile-safe-content {
+    padding-top: max(env(safe-area-inset-top), 2rem);
+    padding-bottom: max(env(safe-area-inset-bottom), 2rem);
+    min-height: calc(100vh - max(env(safe-area-inset-top), 2rem) - max(env(safe-area-inset-bottom), 2rem));
+    min-height: calc(100dvh - max(env(safe-area-inset-top), 2rem) - max(env(safe-area-inset-bottom), 2rem));
+  }
+  
   /* Prevent zoom on input focus */
   input, textarea, select {
     font-size: 16px !important;
@@ -490,6 +510,40 @@ html {
 /* Zoom-aware height utility */
 .min-h-zoom-adjusted {
   min-height: var(--zoom-adjusted-height);
+}
+
+/* Mobile viewport fixes */
+@media (max-width: 768px) {
+  /* Ensure content is always visible */
+  .quiz-content {
+    height: var(--safe-area-height);
+    min-height: var(--safe-area-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+    padding: 1rem 0;
+  }
+  
+  .quiz-question {
+    flex-shrink: 0;
+    margin-bottom: auto;
+    padding-top: max(env(safe-area-inset-top), 1rem);
+  }
+  
+  .quiz-options {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+  }
+  
+  .quiz-progress {
+    flex-shrink: 0;
+    margin-top: auto;
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+  }
 }
 
 /* Enhanced mobile text scaling */
