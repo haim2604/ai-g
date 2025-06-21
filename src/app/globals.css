@@ -395,6 +395,20 @@ html {
     height: 100dvh;
     overflow-x: hidden;
     position: relative;
+    padding-top: 0;
+  }
+  
+  /* Ensure navigation doesn't overlap content */
+  .quiz-main-container {
+    padding-top: 4rem;
+    min-height: calc(100vh - 4rem);
+    min-height: calc(100dvh - 4rem);
+  }
+  
+  /* Extra spacing for quiz question to avoid navigation overlap */
+  .quiz-question-safe {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
   }
   
   /* Ensure content doesn't get cut off */
@@ -446,12 +460,15 @@ html {
     font-size: clamp(1.5rem, 8vw, 2.5rem) !important;
     line-height: 1.2;
     word-break: break-word;
+    margin-top: 1rem !important;
   }
   
   h2 {
     font-size: clamp(1.2rem, 6vw, 2rem) !important;
     line-height: 1.3;
     word-break: break-word;
+    margin-top: 1rem !important;
+    padding-top: 0.5rem !important;
   }
   
   h3 {
@@ -516,20 +533,25 @@ html {
 @media (max-width: 768px) {
   /* Ensure content is always visible */
   .quiz-content {
-    min-height: calc(100vh - 2rem);
-    min-height: calc(100dvh - 2rem);
+    min-height: calc(100vh - 6rem);
+    min-height: calc(100dvh - 6rem);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     padding: 1rem 0;
-    padding-top: max(env(safe-area-inset-top), 1rem);
+    padding-top: max(calc(4rem + env(safe-area-inset-top)), 5rem);
     padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+    margin-top: 4rem; /* Space for fixed navigation */
   }
   
   .quiz-question {
     flex-shrink: 0;
     text-align: center;
-    padding: 0 1rem;
+    padding: 1rem;
+    margin-top: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
   }
   
   .quiz-options {

@@ -495,7 +495,7 @@ export default function Quiz() {
   }
 
   return (
-    <div className="min-h-screen min-h-dvh gradient-animation overflow-hidden relative" ref={containerRef}>
+    <div className={`min-h-screen min-h-dvh gradient-animation overflow-hidden relative ${isMobile ? 'quiz-main-container' : ''}`} ref={containerRef}>
       {!isMobile && <div ref={cursorRef} className="custom-cursor" />}
       
       {/* Background Image */}
@@ -538,13 +538,16 @@ export default function Quiz() {
           exit={{ opacity: 0 }}
           transition={animationSettings.contentTransition}
           className="relative z-10 flex flex-col items-center justify-center min-h-screen min-h-dvh p-4 md:p-8"
+          style={{
+            paddingTop: isMobile ? '5rem' : '4rem'
+          }}
         >
           <div className={`w-full max-w-2xl mx-auto ${isMobile ? 'quiz-content' : 'flex flex-col justify-center'}`}>
             <motion.h2
               initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05, duration: animationSettings.contentTransition.duration }}
-              className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 md:mb-12 text-center text-gradient px-2 ${isMobile ? 'quiz-question' : ''}`}
+              className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 md:mb-12 text-center text-gradient px-2 ${isMobile ? 'quiz-question quiz-question-safe' : ''}`}
               style={{ 
                 fontSize: isMobile ? 'clamp(1.3rem, 5vw, 2.2rem)' : undefined,
                 lineHeight: isMobile ? '1.2' : undefined
