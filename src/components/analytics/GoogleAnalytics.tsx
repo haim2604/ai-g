@@ -12,8 +12,8 @@ export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps)
     // Initialize gtag if it doesn't exist
     if (typeof window !== 'undefined' && !window.gtag) {
       window.dataLayer = window.dataLayer || []
-      window.gtag = function gtag() {
-        window.dataLayer.push(arguments)
+      window.gtag = function gtag(...args: unknown[]) {
+        window.dataLayer.push(args)
       }
       window.gtag('js', new Date())
       window.gtag('config', measurementId, {
@@ -35,7 +35,7 @@ export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps)
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
+            function gtag(){dataLayer.push(Array.from(arguments));}
             gtag('js', new Date());
             gtag('config', '${measurementId}', {
               page_title: document.title,
@@ -49,7 +49,7 @@ export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps)
 }
 
 // Analytics utility functions
-export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
+export const trackEvent = (eventName: string, parameters?: Record<string, string | number | boolean>) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', eventName, parameters)
   }
@@ -98,7 +98,7 @@ export const trackFeedback = (feedbackType: 'like' | 'dislike' | 'neutral', sect
 // Declare gtag types for TypeScript
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void
-    dataLayer: any[]
+    gtag: (...args: unknown[]) => void
+    dataLayer: unknown[]
   }
 } 
