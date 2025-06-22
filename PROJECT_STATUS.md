@@ -3,8 +3,8 @@
 ## מידע כללי
 - **פרויקט**: Gift Finder - מערכת המלצות מתנות באמצעות שאלון
 - **טכנולוגיות**: Next.js, React, TypeScript, Tailwind CSS, Framer Motion
-- **שרת**: https://aig-bef3.onrender.com (קבלת מתנה ראשונה)
-- **שרת החלפות**: https://gserver-0do4.onrender.com (מתנות חלופיות)
+- **שרת**: https://gserver-0do4.onrender.com (שרת מאוחד לכל הפעולות)
+- **endpoints נוספים**: feedback/greeting, feedback/gift, get-alternative
 - **סביבת פיתוח**: מקומית + deployment
 
 ---
@@ -36,7 +36,7 @@
    - עדכון אוטומטי של המידע והשמירה ב-localStorage
 
 4. **API Integration - הגדרה מלאה** ✅
-   - נתיב ראשי: `https://aig-bef3.onrender.com/api/gifts/get-gift`
+   - נתיב ראשי: `https://gserver-0do4.onrender.com/api/gifts/get-gift`
    - נתיב החלפות: `https://gserver-0do4.onrender.com/api/gifts/get-alternative`
    - פורמט נתונים: object עם `traits` (11 מאפיינים)
    - התקבלות: מידע על מתנה + מספר הזמנה + סיבות החלפה

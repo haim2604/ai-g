@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { trackEvent, trackFeedback } from '@/components/analytics/GoogleAnalytics';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -71,8 +72,8 @@ const FeedbackComponent = ({ type, requestId, onFeedbackSent }: FeedbackProps) =
 
     try {
       const endpoint = type === 'greeting' 
-        ? 'https://aig-bef3.onrender.com/api/gifts/feedback/greeting'
-        : 'https://aig-bef3.onrender.com/api/gifts/feedback/gift';
+        ? 'https://gserver-0do4.onrender.com/api/gifts/feedback/greeting'
+        : 'https://gserver-0do4.onrender.com/api/gifts/feedback/gift';
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -88,6 +89,9 @@ const FeedbackComponent = ({ type, requestId, onFeedbackSent }: FeedbackProps) =
       if (response.ok) {
         setIsSubmitted(true);
         onFeedbackSent?.(rating);
+        
+        // Track feedback
+        trackFeedback(rating, type);
       } else {
         console.error('Failed to submit feedback:', response.statusText);
         setSelectedRating(null);
@@ -235,6 +239,14 @@ export default function Results() {
       if (savedGift) {
         const giftData = JSON.parse(savedGift);
         setGiftSuggestion(giftData);
+        
+        // Track results page view with gift data
+        trackEvent('page_view', {
+          page_title: 'Results Page',
+          page_location: '/results',
+          gift_title: giftData.title,
+          gift_price: giftData.price
+        });
       }
       setIsLoading(false);
     };
@@ -325,6 +337,14 @@ export default function Results() {
       // Update localStorage
       localStorage.setItem('giftSuggestion', JSON.stringify(newGiftSuggestion));
       
+      // Track gift replacement
+      trackEvent('gift_replacement', {
+        event_category: 'engagement',
+        original_gift: giftSuggestion.title,
+        new_gift: data.gift.title,
+        replacement_reason: reason
+      });
+      
     } catch (error) {
       console.error('Error replacing gift:', error);
       alert('אירעה שגיאה בהחלפת המתנה. אנא נסה שוב.');
@@ -372,6 +392,14 @@ export default function Results() {
     }
     
     if (shareUrl) {
+      // Track share action
+      trackEvent('share', {
+        method: platform,
+        content_type: 'gift_recommendation',
+        gift_title: giftSuggestion.title,
+        gift_price: giftSuggestion.price
+      });
+      
       window.open(shareUrl, '_blank', 'width=600,height=400');
     }
   };
@@ -667,6 +695,12 @@ export default function Results() {
                 href={giftSuggestion.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent('gift_click', {
+                  event_category: 'conversion',
+                  gift_title: giftSuggestion.title,
+                  gift_price: giftSuggestion.price,
+                  gift_url: giftSuggestion.url
+                })}
                 className="flex-1 bg-pink-500 hover:bg-pink-600 transition-colors px-6 py-3 rounded-full font-semibold text-center flex items-center justify-center gap-2"
               >
                 <span>קנה עכשיו</span>

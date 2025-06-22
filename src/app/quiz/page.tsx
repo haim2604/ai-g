@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useRef, useLayoutEffect } from 'react';
+import { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { trackQuizStart, trackEvent } from '@/components/analytics/GoogleAnalytics';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import {
@@ -250,6 +251,15 @@ export default function Quiz() {
   // זיהוי מכשיר נייד
   const [isMobile, setIsMobile] = useState(false);
 
+  // Track quiz start
+  useEffect(() => {
+    trackQuizStart();
+    trackEvent('page_view', {
+      page_title: 'Quiz Page',
+      page_location: '/quiz'
+    });
+  }, []);
+
   useLayoutEffect(() => {
     setIsMounted(true);
     
@@ -390,6 +400,21 @@ export default function Quiz() {
       console.log('💾 Data to store:', dataToStore);
       localStorage.setItem('giftSuggestion', JSON.stringify(dataToStore));
       
+      // Track quiz completion and gift recommendation
+      trackEvent('quiz_complete', {
+        event_category: 'engagement',
+        questions_answered: Object.keys(answers).length + 1,
+        gift_title: data.gift.title,
+        gift_price: data.gift.price
+      });
+      
+      trackEvent('gift_recommendation', {
+        event_category: 'conversion',
+        gift_title: data.gift.title,
+        gift_price: data.gift.price,
+        gift_category: data.gift.title.split(' ')[0] // First word as category
+      });
+      
       router.push('/results');
     } catch (error) {
       console.error('❌ Error sending answers:', error);
@@ -410,6 +435,14 @@ export default function Quiz() {
     setAnswers(newAnswers);
     setShowOtherInput(false);
     setOtherText('');
+    
+    // Track answer selection
+    trackEvent('quiz_answer', {
+      question_number: currentQuestion + 1,
+      question_id: questions[currentQuestion].id,
+      answer: finalAnswer,
+      event_category: 'engagement'
+    });
     
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion((prev) => prev + 1);

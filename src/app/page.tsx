@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { trackEvent } from '@/components/analytics/GoogleAnalytics';
 import IntroAnimation from '@/components/ui/IntroAnimation';
 import SplashScreen from '@/components/ui/SplashScreen';
 
@@ -42,6 +43,12 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    // Track home page view
+    trackEvent('page_view', {
+      page_title: 'Home Page',
+      page_location: '/'
+    });
+
     // מציג את התוכן אחרי האנימציות
     const timer = setTimeout(() => {
       setIntroComplete(true);
@@ -126,6 +133,10 @@ export default function Home() {
             >
               <Link 
                 href="/quiz"
+                onClick={() => trackEvent('start_quiz_click', {
+                  event_category: 'engagement',
+                  event_label: 'home_page_cta'
+                })}
                 className="inline-block bg-white/10 backdrop-blur-md text-white px-12 py-6 rounded-full text-xl font-semibold hover:bg-white/20 transition-all transform hover-lift magnetic glow"
               >
                 התחל את השאלון

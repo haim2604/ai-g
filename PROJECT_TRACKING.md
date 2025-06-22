@@ -43,7 +43,7 @@ gift-finder/
 
 2. **API Endpoints Configuration**:
    - Files: `src/app/quiz/page.tsx` + `src/app/results/page.tsx`
-   - URLs: `https://aig-bef3.onrender.com` + `https://gserver-0do4.onrender.com`
+   - URLs: `https://gserver-0do4.onrender.com` (שרת מאוחד)
    - Why: שני השרתים עובדים בהרמוניה מושלמת
    - Warning: שינוי URL או פורמט יכול לקרוס את המערכת
 
