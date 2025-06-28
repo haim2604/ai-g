@@ -17,7 +17,7 @@ export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps)
     // Initialize dataLayer
     window.dataLayer = window.dataLayer || []
     
-    function gtag(...args: any[]) {
+    function gtag(...args: unknown[]) {
       console.log('📤 gtag call:', args)
       window.dataLayer.push(args)
     }
@@ -122,7 +122,7 @@ export const trackFeedback = (feedbackType: 'like' | 'dislike' | 'neutral', sect
 // Declare gtag types for TypeScript
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void
-    dataLayer: any[]
+    gtag: (...args: unknown[]) => void
+    dataLayer: unknown[]
   }
 } 
