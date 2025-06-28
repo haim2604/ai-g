@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { trackEvent, trackFeedback } from '@/components/analytics/GoogleAnalytics';
+import { trackEvent, trackFeedback, trackGiftRecommendation, trackQuizComplete } from '@/components/analytics/GoogleAnalytics';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -239,6 +239,10 @@ export default function Results() {
       if (savedGift) {
         const giftData = JSON.parse(savedGift);
         setGiftSuggestion(giftData);
+        
+        // Track quiz completion and gift recommendation
+        trackQuizComplete(11); // All 11 questions were answered
+        trackGiftRecommendation(giftData.title);
         
         // Track results page view with gift data
         trackEvent('page_view', {

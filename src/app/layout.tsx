@@ -36,9 +36,17 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=no" />
       </head>
       <body className={inter.className}>
-        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-          <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-        )}
+        <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-B8TVNSFXJC"} />
+        <script 
+          dangerouslySetInnerHTML={{
+            __html: `
+              console.log('🔍 Environment Check:');
+              console.log('📊 GA ID from env:', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+              console.log('🌐 Current URL:', window.location.href);
+              console.log('🔗 Document ready state:', document.readyState);
+            `
+          }} 
+        />
         <Navigation />
         {children}
       </body>
