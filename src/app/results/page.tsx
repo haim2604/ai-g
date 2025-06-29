@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Metadata } from 'next';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { trackEvent, trackFeedback, trackGiftRecommendation, trackQuizComplete } from '@/components/analytics/GoogleAnalytics';

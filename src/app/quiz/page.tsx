@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useLayoutEffect, useEffect } from 'react';
-import { Metadata } from 'next';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { trackQuizStart, trackEvent } from '@/components/analytics/GoogleAnalytics';
