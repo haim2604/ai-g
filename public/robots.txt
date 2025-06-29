@@ -1,8 +1,11 @@
 User-agent: *
-Disallow: /
+Allow: /
 
-# נחסום את כל הבוטים עד ההשקה הרשמית
-# לאחר ההשקה יש לשנות ל:
-# User-agent: *
-# Allow: /
-# Sitemap: https://your-domain.com/sitemap.xml 
+# חוסמים דפים פנימיים
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /test-zoom/
+
+# Sitemap
+Sitemap: https://gift-finder.vercel.app/sitemap.xml 

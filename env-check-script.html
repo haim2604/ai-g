@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת משתני סביבה - Google Analytics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .section {
+            background: rgba(255,255,255,0.1);
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .code-block {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 15px 0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+        .warning { color: #ff9800; }
+        .info { color: #2196F3; }
+        button {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            border-right: 4px solid #4ECDC4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 בדיקת הגדרות Google Analytics</h1>
+        <p>סקריפט זה בודק ומסביר איך להגדיר נכון את Google Analytics</p>
+
+        <div class="section">
+            <h3>🔍 מצב נוכחי</h3>
+            <div id="current-status"></div>
+            <button onclick="checkCurrentSettings()">בדוק הגדרות נוכחיות</button>
+        </div>
+
+        <div class="section">
+            <h3>📋 הוראות התקנה</h3>
+            
+            <div class="step">
+                <h4>שלב 1: יצירת Measurement ID ב-Google Analytics</h4>
+                <p>1. כנס ל-<a href="https://analytics.google.com" target="_blank" style="color: #4ECDC4;">Google Analytics</a></p>
+                <p>2. צור נכס (Property) חדש</p>
+                <p>3. בחר "Web" כפלטפורמה</p>
+                <p>4. הזן את כתובת האתר: <code>https://gift-finder.vercel.app</code></p>
+                <p>5. העתק את ה-Measurement ID (מתחיל ב-G-)</p>
+            </div>
+
+            <div class="step">
+                <h4>שלב 2: הגדרה מקומית (לפיתוח)</h4>
+                <p>צור קובץ <code>.env.local</code> בתיקיית הפרויקט:</p>
+                <div class="code-block">NEXT_PUBLIC_GA_MEASUREMENT_ID=G-YOUR-ID-HERE</div>
+                <p>החלף <code>G-YOUR-ID-HERE</code> ב-Measurement ID האמיתי שלך</p>
+            </div>
+
+            <div class="step">
+                <h4>שלב 3: הגדרה ב-Vercel (לפרודקשן)</h4>
+                <p>1. כנס לפאנל הניהול של Vercel</p>
+                <p>2. בחר את הפרויקט שלך</p>
+                <p>3. לחץ על Settings → Environment Variables</p>
+                <p>4. הוסף משתנה חדש:</p>
+                <div class="code-block">Name: NEXT_PUBLIC_GA_MEASUREMENT_ID
+Value: G-YOUR-ID-HERE
+Environment: Production, Preview, Development</div>
+                <p>5. פרוס מחדש את האתר</p>
+            </div>
+
+            <div class="step">
+                <h4>שלב 4: בדיקה</h4>
+                <p>לאחר ההגדרה, בדוק:</p>
+                <ul>
+                    <li>הרץ את הסקריפטים לבדיקה שיצרתי</li>
+                    <li>בדוק ב-Google Analytics → Realtime</li>
+                    <li>חכה 24-48 שעות לנתונים מלאים</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🧪 בדיקות מתקדמות</h3>
+            <button onclick="simulateGA()">סימולציית Google Analytics</button>
+            <button onclick="checkNetworkRequests()">בדיקת בקשות רשת</button>
+            <button onclick="validateMeasurementID()">אמת Measurement ID</button>
+            <div id="advanced-results"></div>
+        </div>
+
+        <div class="section">
+            <h3>🔧 פתרון בעיות נפוצות</h3>
+            <div id="troubleshooting"></div>
+            <button onclick="runTroubleshooting()">אבחן בעיות</button>
+        </div>
+    </div>
+
+    <script>
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = type;
+            div.innerHTML = `[${new Date().toLocaleTimeString('he-IL')}] ${message}`;
+            container.appendChild(div);
+        }
+
+        function checkCurrentSettings() {
+            const container = document.getElementById('current-status');
+            container.innerHTML = '';
+
+            // Check if we're in Next.js environment
+            const isNextJS = typeof window !== 'undefined' && window.location;
+            addResult('current-status', `🌐 סביבה: ${isNextJS ? 'דפדפן' : 'שרת'}`, 'info');
+            addResult('current-status', `📍 URL נוכחי: ${window.location.href}`, 'info');
+            addResult('current-status', `🔒 פרוטוקול: ${window.location.protocol}`, window.location.protocol === 'https:' ? 'success' : 'warning');
+
+            // Check for GA script
+            const gaScript = document.querySelector('script[src*="googletagmanager.com/gtag/js"]');
+            if (gaScript) {
+                const url = gaScript.src;
+                const idMatch = url.match(/id=([^&]+)/);
+                const measurementId = idMatch ? idMatch[1] : 'לא נמצא';
+                addResult('current-status', `✅ סקריפט GA נמצא עם ID: ${measurementId}`, 'success');
+            } else {
+                addResult('current-status', '❌ סקריפט Google Analytics לא נמצא', 'error');
+            }
+
+            // Check gtag function
+            if (typeof window.gtag === 'function') {
+                addResult('current-status', '✅ פונקציית gtag זמינה', 'success');
+            } else {
+                addResult('current-status', '❌ פונקציית gtag לא זמינה', 'error');
+            }
+
+            // Check dataLayer
+            if (window.dataLayer && Array.isArray(window.dataLayer)) {
+                addResult('current-status', `✅ dataLayer זמין עם ${window.dataLayer.length} אירועים`, 'success');
+            } else {
+                addResult('current-status', '❌ dataLayer לא זמין', 'error');
+            }
+
+            // Check cookies
+            addResult('current-status', `🍪 קוקיז: ${navigator.cookieEnabled ? 'מופעלים' : 'מנוטרלים'}`, navigator.cookieEnabled ? 'success' : 'error');
+
+            // Check for ad blockers (simple test)
+            const testDiv = document.createElement('div');
+            testDiv.className = 'adsbox';
+            testDiv.style.display = 'none';
+            document.body.appendChild(testDiv);
+            setTimeout(() => {
+                const blocked = testDiv.offsetHeight === 0;
+                document.body.removeChild(testDiv);
+                addResult('current-status', `🚫 חוסם פרסומות: ${blocked ? 'זוהה (עלול לחסום GA)' : 'לא זוהה'}`, blocked ? 'warning' : 'success');
+            }, 100);
+        }
+
+        function simulateGA() {
+            const container = document.getElementById('advanced-results');
+            container.innerHTML = '';
+
+            addResult('advanced-results', '🧪 מתחיל סימולציית Google Analytics...', 'info');
+
+            // Simulate GA initialization
+            if (!window.dataLayer) {
+                window.dataLayer = [];
+                addResult('advanced-results', '📊 יצירת dataLayer', 'info');
+            }
+
+            if (!window.gtag) {
+                window.gtag = function() {
+                    dataLayer.push(arguments);
+                    console.log('gtag called:', arguments);
+                };
+                addResult('advanced-results', '🔧 יצירת פונקציית gtag מדומה', 'info');
+            }
+
+            // Send test events
+            const testEvents = [
+                { name: 'page_view', category: 'navigation' },
+                { name: 'test_event', category: 'debug' },
+                { name: 'user_engagement', category: 'engagement' }
+            ];
+
+            testEvents.forEach((event, index) => {
+                setTimeout(() => {
+                    window.gtag('event', event.name, {
+                        event_category: event.category,
+                        event_label: 'simulation',
+                        value: index + 1
+                    });
+                    addResult('advanced-results', `📤 נשלח אירוע: ${event.name}`, 'success');
+                }, (index + 1) * 500);
+            });
+
+            setTimeout(() => {
+                addResult('advanced-results', `✅ סימולציה הושלמה. dataLayer מכיל ${window.dataLayer.length} אירועים`, 'success');
+            }, 2000);
+        }
+
+        function checkNetworkRequests() {
+            const container = document.getElementById('advanced-results');
+            container.innerHTML = '';
+
+            addResult('advanced-results', '🌐 בודק בקשות רשת ל-Google Analytics...', 'info');
+
+            const testUrls = [
+                'https://www.googletagmanager.com/gtag/js?id=G-B8TVNSFXJC',
+                'https://www.google-analytics.com/analytics.js',
+                'https://analytics.google.com'
+            ];
+
+            testUrls.forEach((url, index) => {
+                const startTime = Date.now();
+                
+                fetch(url, { method: 'HEAD', mode: 'no-cors' })
+                    .then(() => {
+                        const loadTime = Date.now() - startTime;
+                        addResult('advanced-results', `✅ ${url} - ${loadTime}ms`, 'success');
+                    })
+                    .catch((error) => {
+                        addResult('advanced-results', `❌ ${url} - שגיאה: ${error.message}`, 'error');
+                    });
+            });
+        }
+
+        function validateMeasurementID() {
+            const container = document.getElementById('advanced-results');
+            container.innerHTML = '';
+
+            const measurementId = 'G-B8TVNSFXJC'; // Current ID from code
+            addResult('advanced-results', `🔍 בודק Measurement ID: ${measurementId}`, 'info');
+
+            // Validate format
+            const isValidFormat = /^G-[A-Z0-9]{10}$/.test(measurementId);
+            addResult('advanced-results', `📋 פורמט: ${isValidFormat ? 'תקין' : 'לא תקין'}`, isValidFormat ? 'success' : 'error');
+
+            // Check if it's the default/example ID
+            if (measurementId === 'G-B8TVNSFXJC') {
+                addResult('advanced-results', '⚠️ זה נראה כמו ID ברירת מחדל. וודא שזה ה-ID הנכון מ-Google Analytics', 'warning');
+            }
+
+            // Try to load the specific script
+            const scriptUrl = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+            fetch(scriptUrl, { method: 'HEAD', mode: 'no-cors' })
+                .then(() => {
+                    addResult('advanced-results', '✅ סקריפט GA עם ID זה נגיש', 'success');
+                })
+                .catch(() => {
+                    addResult('advanced-results', '❌ בעיה בגישה לסקריפט GA עם ID זה', 'error');
+                });
+        }
+
+        function runTroubleshooting() {
+            const container = document.getElementById('troubleshooting');
+            container.innerHTML = '';
+
+            const issues = [];
+
+            // Check protocol
+            if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+                issues.push({
+                    problem: '🔒 האתר לא רץ על HTTPS',
+                    solution: 'Google Analytics דורש HTTPS. פרוס את האתר ל-Vercel או שרת אחר עם HTTPS'
+                });
+            }
+
+            // Check cookies
+            if (!navigator.cookieEnabled) {
+                issues.push({
+                    problem: '🍪 קוקיז מנוטרלים',
+                    solution: 'אפשר קוקיז בדפדפן. Google Analytics זקוק לקוכיז לעבודה תקינה'
+                });
+            }
+
+            // Check for ad blockers
+            const testDiv = document.createElement('div');
+            testDiv.className = 'adsbox';
+            testDiv.style.display = 'none';
+            document.body.appendChild(testDiv);
+            setTimeout(() => {
+                const blocked = testDiv.offsetHeight === 0;
+                document.body.removeChild(testDiv);
+                
+                if (blocked) {
+                    issues.push({
+                        problem: '🚫 חוסם פרסומות זוהה',
+                        solution: 'נטרל את חוסם הפרסומות לאתר זה או השתמש במצב פרטי'
+                    });
+                }
+
+                // Check GA script
+                if (!document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) {
+                    issues.push({
+                        problem: '📜 סקריפט Google Analytics לא נטען',
+                        solution: 'וודא שמשתנה הסביבה NEXT_PUBLIC_GA_MEASUREMENT_ID מוגדר נכון'
+                    });
+                }
+
+                // Check gtag function
+                if (typeof window.gtag !== 'function') {
+                    issues.push({
+                        problem: '🔧 פונקציית gtag לא זמינה',
+                        solution: 'וודא שסקריפט GA נטען לפני הפעלת gtag'
+                    });
+                }
+
+                // Display results
+                if (issues.length === 0) {
+                    addResult('troubleshooting', '✅ לא נמצאו בעיות ידועות!', 'success');
+                    addResult('troubleshooting', '💡 אם עדיין לא רואה נתונים, חכה 24-48 שעות', 'info');
+                } else {
+                    addResult('troubleshooting', `❌ נמצאו ${issues.length} בעיות:`, 'error');
+                    issues.forEach((issue, index) => {
+                        addResult('troubleshooting', `<br><strong>בעיה ${index + 1}:</strong> ${issue.problem}`, 'error');
+                        addResult('troubleshooting', `<strong>פתרון:</strong> ${issue.solution}`, 'info');
+                    });
+                }
+            }, 100);
+        }
+
+        // Auto-run basic check on load
+        window.addEventListener('load', () => {
+            setTimeout(checkCurrentSettings, 1000);
+        });
+    </script>
+</body>
+</html>

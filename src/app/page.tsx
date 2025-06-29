@@ -171,6 +171,122 @@ export default function Home() {
             ))}
           </div>
         </motion.div>
+
+        {/* SEO Content Section */}
+        <motion.section 
+          className="max-w-4xl mx-auto px-6 py-16 text-center"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: showContent ? 1 : 0, y: showContent ? 0 : 50 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
+          <div className="bg-white/5 backdrop-blur-md rounded-3xl p-8 mb-8">
+            <h2 className="text-3xl font-bold mb-6 text-gradient">
+              למה לבחור ב-GIFT.P.T לחיפוש מתנות?
+            </h2>
+            <p className="text-white/80 mb-6 text-center">
+              רוצים לדעת יותר? בקרו ב<Link href="/about" className="text-purple-300 hover:text-purple-200 underline">דף האודות שלנו</Link> או ב<Link href="/faq" className="text-purple-300 hover:text-purple-200 underline">שאלות נפוצות</Link>
+            </p>
+            <div className="grid md:grid-cols-2 gap-6 text-right">
+              <div className="bg-white/10 rounded-2xl p-6">
+                <h3 className="text-xl font-semibold mb-3 text-white">🎯 מתנות מותאמות אישית</h3>
+                <p className="text-white/80">
+                  הבינה המלאכותית שלנו מנתחת את התשובות שלך ומוצאת מתנות מושלמות 
+                  המותאמות לטעם, לגיל ולאירוע הספציפי
+                </p>
+                <Link href="/about" className="text-purple-300 hover:text-purple-200 text-sm underline block mt-2">
+                  קרא עוד על הטכנולוגיה שלנו
+                </Link>
+              </div>
+              <div className="bg-white/10 rounded-2xl p-6">
+                <h3 className="text-xl font-semibold mb-3 text-white">⚡ חיפוש מהיר וחכם</h3>
+                <p className="text-white/80">
+                  תוך דקות ספורות תקבל המלצות מותאמות אישית, 
+                  ללא צורך לחפש שעות באינטרנט
+                </p>
+                <Link href="/quiz" className="text-purple-300 hover:text-purple-200 text-sm underline block mt-2">
+                  התחל עכשיו →
+                </Link>
+              </div>
+              <div className="bg-white/10 rounded-2xl p-6">
+                <h3 className="text-xl font-semibold mb-3 text-white">🎉 לכל אירוע</h3>
+                <p className="text-white/80">
+                  מתנות ליום הולדת, יום נישואין, יום אהבה, חג, בר/בת מצווה 
+                  וכל אירוע מיוחד בחיים
+                </p>
+                <Link href="/faq" className="text-purple-300 hover:text-purple-200 text-sm underline block mt-2">
+                  ראה עוד אירועים
+                </Link>
+              </div>
+              <div className="bg-white/10 rounded-2xl p-6">
+                <h3 className="text-xl font-semibold mb-3 text-white">💡 רעיונות יצירתיים</h3>
+                <p className="text-white/80">
+                  גלה מתנות מקוריות ויצירתיות שלא חשבת עליהן - 
+                  מתנות שבאמת יפתיעו ושמחו
+                </p>
+                <Link href="/quiz" className="text-purple-300 hover:text-purple-200 text-sm underline block mt-2">
+                  גלה מתנות מקוריות
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/5 backdrop-blur-md rounded-3xl p-8">
+            <h2 className="text-2xl font-bold mb-4 text-gradient">
+              איך זה עובד? פשוט כמו 1-2-3
+            </h2>
+            <p className="text-white/80 mb-6 text-center">
+              רוצים לדעת יותר? בקרו ב<Link href="/about" className="text-purple-300 hover:text-purple-200 underline">דף האודות שלנו</Link> או ב<Link href="/faq" className="text-purple-300 hover:text-purple-200 underline">שאלות נפוצות</Link>
+            </p>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8 text-center">
+              <div className="flex-1">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                  1
+                </div>
+                <h3 className="text-lg font-semibold mb-2">ענה על השאלון</h3>
+                <p className="text-white/80">כמה שאלות קצרות על האדם שאתה בוחר עבורו מתנה</p>
+                <Link href="/quiz" className="text-purple-300 hover:text-purple-200 text-sm underline block mt-2">
+                  התחל כאן →
+                </Link>
+              </div>
+              <div className="flex-1">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                  2
+                </div>
+                <h3 className="text-lg font-semibold mb-2">קבל המלצות AI</h3>
+                <p className="text-white/80">הבינה המלאכותית מנתחת ומוצאת את המתנה המושלמת</p>
+                <Link href="/about" className="text-purple-300 hover:text-purple-200 text-sm underline block mt-2">
+                  איך זה עובד?
+                </Link>
+              </div>
+              <div className="flex-1">
+                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                  3
+                </div>
+                <h3 className="text-lg font-semibold mb-2">בחר ורכוש</h3>
+                <p className="text-white/80">קבל קישור ישיר לרכישת המתנה באלי אקספרס</p>
+                <Link href="/faq" className="text-purple-300 hover:text-purple-200 text-sm underline block mt-2">
+                  שאלות נפוצות
+                </Link>
+              </div>
+            </div>
+            
+            {/* Internal Link Hub */}
+            <div className="mt-8 pt-8 border-t border-white/10">
+              <h3 className="text-lg font-semibold mb-4 text-white">חקור עוד באתר</h3>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link href="/about" className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm transition-colors">
+                  📖 על המערכת
+                </Link>
+                <Link href="/faq" className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm transition-colors">
+                  ❓ שאלות נפוצות
+                </Link>
+                <Link href="/quiz" className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-full text-sm transition-colors">
+                  🎯 התחל שאלון
+                </Link>
+              </div>
+            </div>
+          </div>
+        </motion.section>
       </main>
     </>
   );

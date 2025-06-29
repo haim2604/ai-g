@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקה מהירה - Google Analytics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        button {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .status {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: right;
+            font-family: monospace;
+        }
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+        .warning { color: #ff9800; }
+        .info { color: #2196F3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 בדיקה מהירה - Google Analytics</h1>
+        <p>לחץ על הכפתור לבדיקה מהירה של Google Analytics</p>
+        
+        <button onclick="runQuickTest()">🚀 בדיקה מהירה</button>
+        <button onclick="sendTestEvents()">📊 שלח אירועי בדיקה</button>
+        <button onclick="clearStatus()">🧹 נקה</button>
+        
+        <div id="status" class="status">
+            ממתין לבדיקה...
+        </div>
+    </div>
+
+    <script>
+        const MEASUREMENT_ID = 'G-B8TVNSFXJC';
+        let testResults = [];
+
+        function addResult(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString('he-IL');
+            testResults.push(`<div class="${type}">[${timestamp}] ${message}</div>`);
+            updateStatus();
+            console.log(`[${timestamp}] ${type.toUpperCase()}: ${message}`);
+        }
+
+        function updateStatus() {
+            document.getElementById('status').innerHTML = testResults.join('');
+        }
+
+        function clearStatus() {
+            testResults = [];
+            updateStatus();
+            addResult('סטטוס נוקה');
+        }
+
+        async function runQuickTest() {
+            addResult('🔍 מתחיל בדיקה מהירה...');
+            
+            // Test 1: Check if running on HTTPS or localhost
+            if (location.protocol === 'https:' || location.hostname === 'localhost') {
+                addResult('✅ פרוטוקול תקין (HTTPS/localhost)', 'success');
+            } else {
+                addResult('❌ Google Analytics דורש HTTPS', 'error');
+            }
+
+            // Test 2: Check cookies
+            if (navigator.cookieEnabled) {
+                addResult('✅ קוקיז מופעלים', 'success');
+            } else {
+                addResult('❌ קוקיז מנוטרלים - GA לא יעבוד', 'error');
+            }
+
+            // Test 3: Load GA script
+            addResult('📡 טוען סקריפט Google Analytics...');
+            
+            try {
+                await loadGoogleAnalytics();
+                addResult('✅ סקריפט Google Analytics נטען בהצלחה', 'success');
+                
+                // Test 4: Initialize GA
+                initializeGA();
+                addResult('✅ Google Analytics אותחל', 'success');
+                
+                // Test 5: Send test event
+                setTimeout(() => {
+                    sendTestEvent();
+                    addResult('✅ אירוע בדיקה נשלח', 'success');
+                    
+                    // Test 6: Check dataLayer
+                    if (window.dataLayer && window.dataLayer.length > 0) {
+                        addResult(`✅ dataLayer פעיל עם ${window.dataLayer.length} אירועים`, 'success');
+                    } else {
+                        addResult('⚠️ dataLayer ריק או לא זמין', 'warning');
+                    }
+                    
+                    addResult('🎉 בדיקה הושלמה! בדוק ב-Google Analytics Realtime', 'success');
+                }, 1000);
+                
+            } catch (error) {
+                addResult(`❌ שגיאה בטעינת GA: ${error.message}`, 'error');
+            }
+        }
+
+        function loadGoogleAnalytics() {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.async = true;
+                script.src = `https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        function initializeGA() {
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            window.gtag = gtag;
+
+            gtag('js', new Date());
+            gtag('config', MEASUREMENT_ID, {
+                page_title: 'בדיקה מהירה',
+                page_location: window.location.href,
+                send_page_view: true
+            });
+        }
+
+        function sendTestEvent() {
+            if (window.gtag) {
+                window.gtag('event', 'quick_test', {
+                    event_category: 'debug',
+                    event_label: 'quick_test_script',
+                    value: 1,
+                    test_timestamp: Date.now()
+                });
+            }
+        }
+
+        function sendTestEvents() {
+            if (!window.gtag) {
+                addResult('❌ Google Analytics לא אותחל. הרץ בדיקה מהירה תחילה', 'error');
+                return;
+            }
+
+            addResult('📊 שולח אירועי בדיקה...');
+
+            const events = [
+                { name: 'test_page_view', category: 'navigation' },
+                { name: 'test_quiz_start', category: 'engagement' },
+                { name: 'test_quiz_complete', category: 'engagement' },
+                { name: 'test_gift_recommendation', category: 'conversion' },
+                { name: 'test_share', category: 'social' }
+            ];
+
+            events.forEach((event, index) => {
+                setTimeout(() => {
+                    window.gtag('event', event.name, {
+                        event_category: event.category,
+                        event_label: 'test_batch',
+                        value: index + 1,
+                        test_timestamp: Date.now()
+                    });
+                    addResult(`📤 נשלח: ${event.name}`, 'info');
+                }, index * 500);
+            });
+
+            setTimeout(() => {
+                addResult('✅ כל אירועי הבדיקה נשלחו', 'success');
+                addResult('🔍 בדוק ב-Google Analytics > Realtime > Events', 'info');
+            }, events.length * 500 + 1000);
+        }
+
+        // Auto-run on page load
+        window.addEventListener('load', () => {
+            addResult('🚀 סקריפט בדיקה מהירה נטען');
+            addResult('💡 לחץ על "בדיקה מהירה" להתחלה');
+        });
+    </script>
+</body>
+</html>

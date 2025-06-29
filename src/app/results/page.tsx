@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Metadata } from 'next';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { trackEvent, trackFeedback, trackGiftRecommendation, trackQuizComplete } from '@/components/analytics/GoogleAnalytics';
@@ -649,7 +650,7 @@ export default function Results() {
           <div className="relative h-[300px] md:h-[400px]">
             <Image
               src={giftSuggestion.image}
-              alt={giftSuggestion.title}
+              alt={`מתנה מומלצת בעזרת AI: ${giftSuggestion.title} - מתנה מושלמת שנמצאה בעזרת בינה מלאכותית`}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 800px"
@@ -742,13 +743,21 @@ export default function Results() {
                   <span>שתף ברשתות</span>
                 </button>
               
-              <Link
-                href="/quiz"
-                className="flex-1 bg-white/10 hover:bg-white/20 transition-colors px-6 py-3 rounded-full font-semibold text-center flex items-center justify-center gap-2"
-              >
-                <FontAwesomeIcon icon={faArrowLeft} />
-                <span>חזרה לשאלון</span>
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-3 w-full">
+                <Link
+                  href="/quiz"
+                  className="flex-1 bg-white/10 hover:bg-white/20 transition-colors px-6 py-3 rounded-full font-semibold text-center flex items-center justify-center gap-2"
+                >
+                  <FontAwesomeIcon icon={faArrowLeft} />
+                  <span>חזרה לשאלון</span>
+                </Link>
+                <Link
+                  href="/"
+                  className="flex-1 bg-white/5 hover:bg-white/15 transition-colors px-6 py-3 rounded-full font-semibold text-center flex items-center justify-center gap-2 border border-white/20"
+                >
+                  <span>עמוד הבית</span>
+                </Link>
+              </div>
                 
                 <button
                   onClick={() => {

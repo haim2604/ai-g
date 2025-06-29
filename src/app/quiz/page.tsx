@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import { Metadata } from 'next';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { trackQuizStart, trackEvent } from '@/components/analytics/GoogleAnalytics';
@@ -545,7 +546,7 @@ export default function Quiz() {
             <div className="absolute inset-0 w-full h-full">
               <Image
                 src={questions[currentQuestion].backgroundImage}
-                alt="Background"
+                                  alt={`רקע לשאלון מתנות AI - ${questions[currentQuestion].question}`}
                 fill
                 className="object-cover object-center"
                 sizes="100vw"

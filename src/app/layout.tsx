@@ -7,9 +7,25 @@ import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'GIFT.P.T - מציאת מתנות מושלמות בעזרת AI',
-  description: 'מערכת חכמה למציאת מתנות מותאמות אישית בעזרת בינה מלאכותית',
+  title: 'מתנות AI - חיפוש מתנות מושלמות | GIFT.P.T',
+  description: 'מצא מתנות מושלמות בעזרת בינה מלאכותית! מתנות ליום הולדת, יום נישואין, יום אהבה ואירועים מיוחדים. AI Gift Finder - Perfect gifts powered by artificial intelligence.',
   metadataBase: new URL('https://gift-finder.vercel.app'),
+  keywords: [
+    'מתנות AI', 'חיפוש מתנות', 'מתנות ליום הולדת', 'מתנות ליום נישואין', 'מתנות ליום אהבה',
+    'AI gifts', 'gift finder', 'birthday gifts', 'anniversary gifts', 'valentine gifts'
+  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: 'מתנות AI - חיפוש מתנות מושלמות | GIFT.P.T',
+    description: 'מצא מתנות מושלמות בעזרת בינה מלאכותית! מתנות ליום הולדת, יום נישואין, יום אהבה ואירועים מיוחדים.',
+    url: 'https://gift-finder.vercel.app',
+    siteName: 'GIFT.P.T',
+    locale: 'he_IL',
+    type: 'website',
+  },
 }
 
 export const viewport: Viewport = {
@@ -34,6 +50,34 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="format-detection" content="telephone=no" />
+        
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "GIFT.P.T - AI Gift Finder",
+              "url": "https://gift-finder.vercel.app",
+              "description": "AI-powered gift recommendation system for finding perfect gifts for any occasion",
+              "applicationCategory": "LifestyleApplication",
+              "operatingSystem": "Web Browser",
+              "inLanguage": ["he", "en"],
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              },
+              "featureList": [
+                "AI-powered gift recommendations",
+                "Personalized gift finder",
+                "Multi-language support",
+                "Occasion-based suggestions"
+              ]
+            })
+          }}
+        />
       </head>
       <body className={inter.className}>
         <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-B8TVNSFXJC"} />
