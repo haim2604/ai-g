@@ -3,42 +3,180 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://gift-finder.vercel.app/</loc>
-    <lastmod>2024-01-15</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="he" href="https://gift-finder.vercel.app/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://gift-finder.vercel.app/" />
   </url>
   <url>
     <loc>https://gift-finder.vercel.app/quiz</loc>
-    <lastmod>2024-01-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="he" href="https://gift-finder.vercel.app/quiz" />
     <xhtml:link rel="alternate" hreflang="en" href="https://gift-finder.vercel.app/quiz" />
   </url>
   <url>
     <loc>https://gift-finder.vercel.app/results</loc>
-    <lastmod>2024-01-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="he" href="https://gift-finder.vercel.app/results" />
     <xhtml:link rel="alternate" hreflang="en" href="https://gift-finder.vercel.app/results" />
   </url>
   <url>
     <loc>https://gift-finder.vercel.app/about</loc>
-    <lastmod>2024-01-15</lastmod>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="he" href="https://gift-finder.vercel.app/about" />
     <xhtml:link rel="alternate" hreflang="en" href="https://gift-finder.vercel.app/about" />
   </url>
   <url>
+    <loc>https://gift-finder.vercel.app/blog</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://gift-finder.vercel.app/blog" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://gift-finder.vercel.app/blog" />
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/categories</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://gift-finder.vercel.app/categories" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://gift-finder.vercel.app/categories" />
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/occasions</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://gift-finder.vercel.app/occasions" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://gift-finder.vercel.app/occasions" />
+  </url>
+  <url>
     <loc>https://gift-finder.vercel.app/faq</loc>
-    <lastmod>2024-01-15</lastmod>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
     <xhtml:link rel="alternate" hreflang="he" href="https://gift-finder.vercel.app/faq" />
     <xhtml:link rel="alternate" hreflang="en" href="https://gift-finder.vercel.app/faq" />
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/blog/guide-to-ai-gifts</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/blog/50-birthday-gift-ideas</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/blog/anniversary-gifts-ideas</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/blog/valentines-day-gifts-2024</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/blog/jewish-holidays-gifts</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/blog/gifts-for-kids-by-age</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/blog/gamer-gifts-guide</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/blog/home-kitchen-gifts</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/blog/diy-gifts-guide</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/categories/kids</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/categories/tech</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/categories/romantic</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/categories/gaming</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/occasions/birthday</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/occasions/anniversary</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/occasions/valentines</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/occasions/hanukkah</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/occasions/wedding</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://gift-finder.vercel.app/occasions/graduation</loc>
+    <lastmod>2024-01-15T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset> 
