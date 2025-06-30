@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'שאלות נפוצות - GIFT.P.T | מתנות AI חכמות',
     description: 'מצא תשובות לשאלות הנפוצות על GIFT.P.T - מערכת מתנות AI.',
-    url: 'https://gift-finder.vercel.app/faq',
+    url: 'https://gift-pt.com/faq',
     type: 'website',
   },
 };

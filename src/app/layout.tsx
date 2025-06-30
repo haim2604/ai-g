@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'מתנות AI - חיפוש מתנות מושלמות | GIFT.P.T',
   description: 'מצא מתנות מושלמות בעזרת בינה מלאכותית! מתנות ליום הולדת, יום נישואין, יום אהבה ואירועים מיוחדים. AI Gift Finder - Perfect gifts powered by artificial intelligence.',
-  metadataBase: new URL('https://gift-finder.vercel.app'),
+  metadataBase: new URL('https://gift-pt.com'),
   keywords: [
     'מתנות AI', 'חיפוש מתנות', 'מתנות ליום הולדת', 'מתנות ליום נישואין', 'מתנות ליום אהבה',
     'AI gifts', 'gift finder', 'birthday gifts', 'anniversary gifts', 'valentine gifts'
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'מתנות AI - חיפוש מתנות מושלמות | GIFT.P.T',
     description: 'מצא מתנות מושלמות בעזרת בינה מלאכותית! מתנות ליום הולדת, יום נישואין, יום אהבה ואירועים מיוחדים.',
-    url: 'https://gift-finder.vercel.app',
+          url: 'https://gift-pt.com',
     siteName: 'GIFT.P.T',
     locale: 'he_IL',
     type: 'website',
@@ -59,7 +59,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebApplication",
               "name": "GIFT.P.T - AI Gift Finder",
-              "url": "https://gift-finder.vercel.app",
+              "url": "https://gift-pt.com",
               "description": "AI-powered gift recommendation system for finding perfect gifts for any occasion",
               "applicationCategory": "LifestyleApplication",
               "operatingSystem": "Web Browser",

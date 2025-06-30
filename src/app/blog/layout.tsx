@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'מדריך מתנות AI מקיף - כל מה שצריך לדעת על מתנות חכמות',
     description: 'המדריך הכי מקיף למתנות AI בישראל. רעיונות מתנות, מדריכים, טיפים ועצות מקצועיות.',
-    url: 'https://gift-finder.vercel.app/blog',
+    url: 'https://gift-pt.com/blog',
     type: 'website',
     images: [
       {
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: 'https://gift-finder.vercel.app/blog',
+    canonical: 'https://gift-pt.com/blog',
   },
 };
 

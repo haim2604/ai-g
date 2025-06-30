@@ -35,7 +35,7 @@ const defaultMetadata: Metadata = {
     type: 'website',
     locale: 'he_IL',
     alternateLocale: ['en_US'],
-    url: 'https://gift-finder.vercel.app',
+    url: 'https://gift-pt.com',
     siteName: 'GIFT.P.T - מתנות AI',
     title: 'מתנות AI - חיפוש מתנות מושלמות | GIFT.P.T',
     description: 'מצא מתנות מושלמות בעזרת בינה מלאכותית! מתנות ליום הולדת, יום נישואין, יום אהבה ואירועים מיוחדים.',

@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'קטגוריות מתנות AI - מתנות לילדים, מתנות טכנולוגיות ועוד',
     description: 'חפש מתנות לפי קטגוריה: מתנות לילדים, מתנות טכנולוגיות, מתנות רומנטיות ועוד.',
-    url: 'https://gift-finder.vercel.app/categories',
+    url: 'https://gift-pt.com/categories',
     type: 'website',
   },
 };

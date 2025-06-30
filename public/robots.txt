@@ -8,4 +8,4 @@ Disallow: /_next/
 Disallow: /test-zoom/
 
 # Sitemap
-Sitemap: https://gift-finder.vercel.app/sitemap.xml 
+Sitemap: https://gift-pt.com/sitemap.xml 

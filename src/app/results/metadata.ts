@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'תוצאות מתנות AI - המתנות המושלמות שלך',
     description: 'קבל המלצות מתנות מותאמות אישית בעזרת בינה מלאכותית. מתנות מושלמות ליום הולדת, יום נישואין, יום אהבה ואירועים מיוחדים.',
-    url: 'https://gift-finder.vercel.app/results',
+    url: 'https://gift-pt.com/results',
     type: 'website',
   },
   twitter: {

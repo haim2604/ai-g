@@ -10,7 +10,6 @@ import {
   faBaby,
   faHome,
   faCrown,
-  faMusic,
   faTree,
   faFire,
   faEgg,

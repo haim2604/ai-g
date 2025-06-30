@@ -37,7 +37,7 @@
 
 4. **הגדר Data Stream**
    - בחר "Web"
-   - URL: `https://gift-finder.vercel.app`
+   - URL: `https://gift-pt.com`
    - שם Stream: `Gift Finder Website`
 
 5. **העתק את ה-Measurement ID**
@@ -75,7 +75,7 @@ npm run dev
 ```
 
 #### בדיקה בפרודקשן:
-1. לך לאתר: `https://gift-finder.vercel.app`
+1. לך לאתר: `https://gift-pt.com`
 2. פתח Developer Tools (F12)
 3. בדוק בקונסול הודעות של GA
 4. בדוק ב-Network tab בקשות ל-`googletagmanager.com`
