@@ -13,6 +13,14 @@ export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps)
     console.log('📊 Measurement ID:', measurementId)
     console.log('🌐 Environment:', process.env.NODE_ENV)
     console.log('🔗 Current URL:', window.location.href)
+    console.log('🏠 Domain:', window.location.hostname)
+    console.log('🎯 User Agent:', navigator.userAgent)
+    
+    // Validate measurement ID format
+    if (!measurementId || !measurementId.startsWith('G-')) {
+      console.error('❌ Invalid Google Analytics Measurement ID:', measurementId)
+      return
+    }
     
     // Initialize dataLayer
     window.dataLayer = window.dataLayer || []
@@ -25,26 +33,60 @@ export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps)
     // Make gtag available globally
     window.gtag = gtag
     
-    // Initialize gtag
+    // Initialize gtag with enhanced configuration
     gtag('js', new Date())
     gtag('config', measurementId, {
       page_title: document.title,
       page_location: window.location.href,
-      send_page_view: true
+      send_page_view: true,
+      // Enable enhanced measurement
+      allow_google_signals: true,
+      allow_ad_personalization_signals: true,
+      cookie_flags: 'SameSite=None;Secure'
     })
     
     console.log('✅ gtag initialized with config:', measurementId)
     console.log('📊 dataLayer contents:', window.dataLayer)
     
-    // Test event after 2 seconds
+    // Enhanced connectivity test
     setTimeout(() => {
-      console.log('🧪 Sending test event...')
+      console.log('🧪 Sending enhanced test events...')
+      
+      // Test basic event
       gtag('event', 'test_analytics', {
         event_category: 'debug',
-        event_label: 'connection_test'
+        event_label: 'connection_test',
+        custom_parameter_1: 'test_value'
       })
-      console.log('✅ Test event sent')
+      
+      // Test page view
+      gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: window.location.href
+      })
+      
+      // Test user engagement
+      gtag('event', 'user_engagement', {
+        engagement_time_msec: 1000
+      })
+      
+      console.log('✅ All test events sent')
+      console.log('📊 Final dataLayer:', window.dataLayer)
     }, 2000)
+    
+    // Additional debug info after 5 seconds
+    setTimeout(() => {
+      console.log('🔍 5-second check:')
+      console.log('📊 dataLayer length:', window.dataLayer.length)
+      console.log('🌐 gtag function available:', typeof window.gtag)
+      
+      // Check if Google Analytics script is loaded
+      const gaScript = document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${measurementId}"]`)
+      console.log('📜 GA Script found:', !!gaScript)
+      
+      // Check for Google Analytics global object
+      console.log('🔧 Google Analytics global:', typeof (window as any).google_tag_manager)
+    }, 5000)
     
   }, [measurementId])
 
@@ -55,9 +97,11 @@ export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps)
         src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
         onLoad={() => {
           console.log('✅ Google Analytics script loaded successfully')
+          console.log('📊 Script URL:', `https://www.googletagmanager.com/gtag/js?id=${measurementId}`)
         }}
         onError={(e) => {
           console.error('❌ Google Analytics script failed to load:', e)
+          console.error('📊 Failed URL:', `https://www.googletagmanager.com/gtag/js?id=${measurementId}`)
         }}
       />
     </>
