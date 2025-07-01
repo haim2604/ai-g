@@ -85,7 +85,7 @@ export default function GoogleAnalytics({ measurementId }: GoogleAnalyticsProps)
       console.log('📜 GA Script found:', !!gaScript)
       
       // Check for Google Analytics global object
-      console.log('🔧 Google Analytics global:', typeof (window as any).google_tag_manager)
+      console.log('🔧 Google Analytics global:', typeof (window as Window & { google_tag_manager?: unknown }).google_tag_manager)
     }, 5000)
     
   }, [measurementId])
